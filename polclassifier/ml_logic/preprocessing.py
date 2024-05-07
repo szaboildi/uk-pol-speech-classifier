@@ -1,6 +1,7 @@
-# import nltk
-# nltk.download("stopwords")
-
+import nltk
+nltk.download("stopwords")
+nltk.download("punkt")
+nltk.download("wordnet")
 # from nltk.corpus import stopwords
 # stop_words = set(stopwords.words('english'))
 import os
@@ -99,7 +100,7 @@ def preprocess_text_col(
             lambda x: x.text if x.word_n_full <= max_word_count
             else " ".join(x.text.split()[
                 (x.word_n_full//2)-(max_word_count//2):(x.word_n_full//2)+max_word_count//2]),
-            axis=1)["text"]
+            axis=1)
 
     clean_texts = df["text"].apply(clean_text)
 
