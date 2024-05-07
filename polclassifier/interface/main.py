@@ -47,7 +47,7 @@ def preprocess():
         print("✅ X and y preprocessed \n")
 
         save_processed_to_cache(
-            X, y, local_path=LOCAL_PATH, sample_size=SAMPLE_SIZE,
+            pd.DataFrame(X), y, local_path=LOCAL_PATH, sample_size=SAMPLE_SIZE,
             min_word_count=MIN_WORD_COUNT, max_word_count=MAX_WORD_COUNT)
 
         print("✅ X and y saved to cache \n")
