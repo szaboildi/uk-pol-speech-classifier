@@ -99,7 +99,7 @@ def preprocess_text_col(
             lambda x: x.text if x.word_n_full <= max_word_count
             else " ".join(x.text.split()[
                 (x.word_n_full//2)-(max_word_count//2):(x.word_n_full//2)+max_word_count//2]),
-            axis=1)["text"]
+            axis=1)
 
     clean_texts = df["text"].apply(clean_text)
 
