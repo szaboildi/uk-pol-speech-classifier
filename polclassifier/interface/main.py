@@ -7,7 +7,7 @@ from polclassifier.ml_logic.preprocessing import *
 from polclassifier.params import *
 
 
-def preprocess():
+def preprocess(reprocess_by_default=False):
     print(Fore.MAGENTA + "\n ⭐️ Use case: preprocess" + Style.RESET_ALL)
 
     X_path = os.path.join(
@@ -19,7 +19,7 @@ def preprocess():
 
     # Check cache
     # if there, load from there
-    if os.path.isfile(X_path) and os.path.isfile(y_path):
+    if os.path.isfile(X_path) and os.path.isfile(y_path) and not reprocess_by_default:
         print("✅ X and y loaded in from cache \n")
         X = pd.read_csv(X_path)
         y = pd.read_csv(y_path)
@@ -55,4 +55,4 @@ def preprocess():
 
 
 if __name__ == '__main__':
-    X, y = preprocess()
+    X, y = preprocess(reprocess_by_default=REPROCESS_BY_DEFAULT)
