@@ -148,6 +148,6 @@ def save_processed_to_cache(
         local_path, "processed_data",
         f"target_{sample_size}sample_{min_word_count}min_{max_word_count}cutoff.csv")
 
-    X.to_csv(X_path)
-    y.to_csv(y_path)
+    X.to_csv(X_path, index=False)
+    y.to_csv(y_path, index=False)
     return
