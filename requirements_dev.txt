@@ -1,5 +1,5 @@
 colorama
 nltk
 pandas==2.2.2
-pyarrow==10.0.1
+pyarrow==14.0.1
 scikit-learn==1.3.1
