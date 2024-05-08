@@ -1,4 +1,5 @@
 import os
+from scipy.stats import uniform, randint
 
 ##################  VARIABLES  ##################
 # Github
@@ -19,6 +20,18 @@ VECT_METHOD = "tfidf" # Possible values: "tfidf"
 MIN_DF = 5
 MAX_DF = 0.85
 MAX_FEATURES = 10000
+
+# Randomized search parameters for model SVM
+PENALTY_C = uniform(0.1, 10)
+KERNEL = ['linear', 'poly', 'rbf', 'sigmoid']
+GAMMA = ['scale', 'auto']
+DEGREE = randint(1, 10)
+
+# Parameters for default model SVM
+KERNEL_DEFAULT = "linear"
+GAMMA_DEFAULT = "scale"
+C_DEFAULT = 4.2
+
 
 ##################  CONSTANTS  #####################
 LOCAL_PATH = os.path.join(

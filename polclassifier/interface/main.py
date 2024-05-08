@@ -2,8 +2,10 @@ import os
 from colorama import Fore, Style
 import pandas as pd
 
+from sklearn.model_selection import train_test_split
 
 from polclassifier.ml_logic.preprocessing import *
+from polclassifier.ml_logic.models import *
 from polclassifier.params import *
 
 
@@ -53,6 +55,31 @@ def preprocess():
         print("✅ X and y saved to cache \n")
 
     return X, y
+
+def train_evaluate_model_svm(split_ratio: float = 0.2, perform_search: bool = False):
+    print(Fore.MAGENTA + "\n⭐️ Use case: train" + Style.RESET_ALL)
+    print(Fore.BLUE + "\nLoading preprocessed validation data..." + Style.RESET_ALL)
+
+    # Retrieve data
+    X, y = preprocess()
+
+    # Split the data into training and testing sets
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=split_ratio, random_state=42)
+
+    if perform_search:
+        # Search for best parameters
+        best_params = randomized_search_model_svm(X_train, y_train)
+    else:
+        # Use default parameters
+        best_params = None
+
+    # Train model using `models.py`
+    model = train_model_svm(X_train, y_train, best_params=best_params)
+
+    # Evaluate model using `models.py
+    accuracy = evaluate_model_svm(model=model, X=X_test, y=y_test)
+
+    return model, accuracy
 
 
 if __name__ == '__main__':
