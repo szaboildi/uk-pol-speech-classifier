@@ -6,6 +6,8 @@ PROJECT_LEAD = "szaboildi"
 PROJECT_NAME = "uk-pol-speech-classifier"
 
 # Preprocessing variables
+REPROCESS_BY_DEFAULT = False # Should raw data be reprocessed even if it's already cached
+
 MIN_WORD_COUNT = 400
 SAMPLE_SIZE = 1000
 PARTIES_TO_EXCLUDE = [] # list of strings with party names to exclude
