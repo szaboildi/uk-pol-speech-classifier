@@ -31,7 +31,6 @@ def preprocess():
 
         raw_data_path = os.path.join(
             LOCAL_PATH, "raw_data", "Corp_HouseOfCommons_V2.feather")
-
         data = pd.read_feather(raw_data_path)
 
         print("✅ Raw dataset loaded in \n")

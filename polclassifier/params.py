@@ -4,8 +4,6 @@ import os
 # Github
 PROJECT_LEAD = "szaboildi"
 PROJECT_NAME = "uk-pol-speech-classifier"
-# # Virtual env
-# VIRTENV_NAME = "polclassifier"
 
 # Preprocessing variables
 MIN_WORD_COUNT = 400
@@ -22,4 +20,4 @@ MAX_FEATURES = 10000
 
 ##################  CONSTANTS  #####################
 LOCAL_PATH = os.path.join(
-    os.path.expanduser('~'), "code", "szaboildi", "uk-pol-speech-classifier")
+    os.path.expanduser('~'), "code", PROJECT_LEAD, PROJECT_NAME)
