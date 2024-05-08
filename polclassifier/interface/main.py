@@ -9,7 +9,7 @@ from polclassifier.ml_logic.models import *
 from polclassifier.params import *
 
 
-def preprocess():
+def preprocess(reprocess_by_default=False):
     print(Fore.MAGENTA + "\n ⭐️ Use case: preprocess" + Style.RESET_ALL)
 
     X_path = os.path.join(
@@ -21,7 +21,7 @@ def preprocess():
 
     # Check cache
     # if there, load from there
-    if os.path.isfile(X_path) and os.path.isfile(y_path):
+    if os.path.isfile(X_path) and os.path.isfile(y_path) and not reprocess_by_default:
         print("✅ X and y loaded in from cache \n")
         X = pd.read_csv(X_path)
         y = pd.read_csv(y_path)
@@ -33,7 +33,6 @@ def preprocess():
 
         raw_data_path = os.path.join(
             LOCAL_PATH, "raw_data", "Corp_HouseOfCommons_V2.feather")
-
         data = pd.read_feather(raw_data_path)
 
         print("✅ Raw dataset loaded in \n")
@@ -49,7 +48,7 @@ def preprocess():
         print("✅ X and y preprocessed \n")
 
         save_processed_to_cache(
-            X, y, local_path=LOCAL_PATH, sample_size=SAMPLE_SIZE,
+            pd.DataFrame(X), y, local_path=LOCAL_PATH, sample_size=SAMPLE_SIZE,
             min_word_count=MIN_WORD_COUNT, max_word_count=MAX_WORD_COUNT)
 
         print("✅ X and y saved to cache \n")
@@ -83,4 +82,4 @@ def train_evaluate_model_svm(split_ratio: float = 0.2, perform_search: bool = Fa
 
 
 if __name__ == '__main__':
-    X, y = preprocess()
+    X, y = preprocess(reprocess_by_default=REPROCESS_BY_DEFAULT)

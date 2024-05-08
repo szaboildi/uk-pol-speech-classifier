@@ -1,5 +1,7 @@
-# import nltk
-# nltk.download("stopwords")
+import nltk
+nltk.download("stopwords")
+nltk.download("punkt")
+nltk.download("wordnet")
 
 # from nltk.corpus import stopwords
 # stop_words = set(stopwords.words('english'))
@@ -50,7 +52,7 @@ def clean_data(df, min_word_count=400, sample_size=1000, parties_to_exclude=[]):
     return df_undersampled
 
 
-def clean_text(text):
+def clean_text(text:str):
     # remove whitespace
     text = text.strip()
     # lowercase characters
@@ -81,8 +83,7 @@ def clean_text(text):
 
 
 def preprocess_text_col(
-    df, max_word_count=600, extract_from="middle",
-    min_df=5, max_df=0.85, max_features=10000):
+    df, max_word_count=600, extract_from="middle"):
     """
     df: dataframe to process
     max_word_count: amount of text to truncate long speeches to
@@ -99,8 +100,9 @@ def preprocess_text_col(
             lambda x: x.text if x.word_n_full <= max_word_count
             else " ".join(x.text.split()[
                 (x.word_n_full//2)-(max_word_count//2):(x.word_n_full//2)+max_word_count//2]),
-            axis=1)["text"]
+            axis=1)
 
+    # Clean truncated text
     clean_texts = df["text"].apply(clean_text)
 
     return clean_texts
@@ -117,8 +119,7 @@ def preprocess_all(df, min_word_count=400, sample_size=1000, parties_to_exclude=
 
     X = preprocess_text_col(
         df[["text", "word_n_full"]], max_word_count=max_word_count,
-        extract_from=extract_from, min_df=min_df, max_df=max_df,
-        max_features=max_features)
+        extract_from=extract_from)
     y = df["party"]
 
     print("✅ Text preprocessed - X created \n")
@@ -133,7 +134,6 @@ def preprocess_all(df, min_word_count=400, sample_size=1000, parties_to_exclude=
 
         print("✅ X vectorized (TfIDf) \n")
 
-
     return X, y
 
 
@@ -147,6 +147,7 @@ def save_processed_to_cache(
     y_path = os.path.join(
         local_path, "processed_data",
         f"target_{sample_size}sample_{min_word_count}min_{max_word_count}cutoff.csv")
-    X.to_csv(X_path)
-    y.to_csv(y_path)
+
+    X.to_csv(X_path, index=False)
+    y.to_csv(y_path, index=False)
     return
