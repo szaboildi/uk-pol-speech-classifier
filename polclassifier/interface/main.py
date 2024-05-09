@@ -6,6 +6,7 @@ from sklearn.model_selection import train_test_split
 
 from polclassifier.ml_logic.preprocessing import *
 from polclassifier.ml_logic.models import *
+from polclassifier.ml_logic.registry import *
 from polclassifier.params import *
 
 
@@ -78,7 +79,10 @@ def train_evaluate_model_svm(split_ratio: float = 0.2, perform_search: bool = Fa
     # Evaluate model using `models.py
     accuracy = evaluate_model_svm(model=model, X=X_test, y=y_test)
 
-    return model, accuracy
+    # Save model weight on the hard drive (and optionally on GCS too!)
+    save_model(model=model)
+
+    return accuracy
 
 
 if __name__ == '__main__':

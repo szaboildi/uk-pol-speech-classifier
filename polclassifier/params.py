@@ -6,6 +6,9 @@ from scipy.stats import uniform, randint
 PROJECT_LEAD = "szaboildi"
 PROJECT_NAME = "uk-pol-speech-classifier"
 
+########### Constants ###############
+LOCAL_REGISTRY_PATH =  os.path.join(os.path.expanduser('~'), ".lewagon", "polclassifier", "training_outputs")
+
 # Preprocessing variables
 REPROCESS_BY_DEFAULT = False # Should raw data be reprocessed even if it's already cached
 
