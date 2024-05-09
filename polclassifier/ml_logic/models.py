@@ -19,10 +19,11 @@ def randomized_search_model_svm(X, y):
     # Create an SVM classifier
     svm_classifier = SVC()
 
+    print("Performing random search...")
     # Perform random search cross-validation
     random_search = RandomizedSearchCV(svm_classifier, param_distributions=param_grid, n_iter=10, scoring='accuracy', cv=5, n_jobs=-1)
     random_search.fit(X, y)
-
+    
     # Best hyperparameters found
     best_params = random_search.best_params_
 
