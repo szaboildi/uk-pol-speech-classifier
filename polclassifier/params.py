@@ -1,6 +1,5 @@
 import os
 from scipy.stats import uniform, randint
-
 ##################  VARIABLES  ##################
 # Github
 PROJECT_LEAD = "szaboildi"
