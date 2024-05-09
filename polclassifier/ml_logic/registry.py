@@ -11,7 +11,7 @@ from polclassifier.params import *
 def save_model_keras(model: keras.Model = None) -> None:
 
     timestamp = time.strftime("%Y%m%d-%H%M%S")
-    
+
     # Save model locally
     model_path = os.path.join(LOCAL_REGISTRY_PATH, "models", f"{timestamp}.h5")
     model.save(model_path)
@@ -19,9 +19,6 @@ def save_model_keras(model: keras.Model = None) -> None:
     print("✅ Model saved locally")
 
     if MODEL_TARGET == "gcs":
-        
-        # 🎁 We give you this piece of code as a gift. Please read it carefully! Add a breakpoint if needed!
-
         model_filename = model_path.split("/")[-1] # e.g. "20230208-161047.h5" for instance
         client = storage.Client()
         bucket = client.bucket(BUCKET_NAME)
@@ -37,7 +34,7 @@ def save_model_keras(model: keras.Model = None) -> None:
 def save_model_sklearn(model = None) -> None:
 
     timestamp = time.strftime("%Y%m%d-%H%M%S")
-    
+
     # Save model locally
     model_path = os.path.join(LOCAL_REGISTRY_PATH, "models", f"{timestamp}.pkl")
     joblib.dump(model, model_path)
@@ -45,9 +42,6 @@ def save_model_sklearn(model = None) -> None:
     print("✅ Model saved locally")
 
     if MODEL_TARGET == "gcs":
-        
-        # 🎁 We give you this piece of code as a gift. Please read it carefully! Add a breakpoint if needed!
-
         model_filename = model_path.split("/")[-1] # e.g. "20230208-161047.h5" for instance
         client = storage.Client()
         bucket = client.bucket(BUCKET_NAME)
@@ -100,15 +94,15 @@ def load_model_keras() -> keras.Model:
             print("✅ Latest model downloaded from cloud storage")
 
             return latest_model
-        
+
         except:
-            
+
             print(f"\n❌ No model found in GCS bucket {BUCKET_NAME}")
 
             return None
 
     print("\n❌ Model target not recognised")
-    
+
     return None
 
 # def load_model_sklearn() -> keras.Model:
@@ -151,13 +145,13 @@ def load_model_keras() -> keras.Model:
 #             print("✅ Latest model downloaded from cloud storage")
 
 #             return latest_model
-        
+
 #         except:
-            
+
 #             print(f"\n❌ No model found in GCS bucket {BUCKET_NAME}")
 
 #             return None
 
 #     print("\n❌ Model target not recognised")
-    
+
 #     return None
