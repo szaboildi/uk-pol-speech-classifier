@@ -65,7 +65,7 @@ def train_evaluate_model_svm(split_ratio: float = 0.2, perform_search: bool = Fa
     X, y = preprocess()
    
     # Extract series from y DataFrame
-    y = y["party"]
+    y = y['party']
     
     print(f"y shape: {y.shape}")
     
@@ -119,11 +119,9 @@ def pred_sklearn(speech: str = None) -> np.ndarray:
     
     if VECT_METHOD=="tfidf":
         
-        tf_idf_vectorizer = TfidfVectorizer(
-            min_df=5, max_df=0.85, max_features=10000,
-            stop_words="english")
+        tf_idf_vectorizer = load_vectorizer(min_df=MIN_DF, max_df=MAX_DF, max_features=MAX_FEATURES)
 
-        X_vectorized = tf_idf_vectorizer.fit_transform(X_processed).toarray()
+        X_vectorized = tf_idf_vectorizer.transform(X_processed).toarray()
         
     print("... and vectorizing! ✅ \n") 
     
@@ -131,7 +129,7 @@ def pred_sklearn(speech: str = None) -> np.ndarray:
     model = load_model_sklearn()
     assert model is not None
     
-    y_pred = model.predict(X_processed)
+    y_pred = model.predict(X_vectorized)
     
     print(f"✅ And the winner is ... {y_pred}")
 
