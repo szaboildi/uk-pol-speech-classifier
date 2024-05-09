@@ -6,10 +6,12 @@ from sklearn.model_selection import train_test_split
 
 from polclassifier.ml_logic.preprocessing import *
 from polclassifier.ml_logic.models import *
+from polclassifier.ml_logic.registry import *
 from polclassifier.params import *
 
 
 def preprocess(reprocess_by_default=False):
+    
     print(Fore.MAGENTA + "\n ⭐️ Use case: preprocess" + Style.RESET_ALL)
 
     X_path = os.path.join(
@@ -62,10 +64,17 @@ def train_evaluate_model_svm(split_ratio: float = 0.2, perform_search: bool = Fa
 
     # Retrieve data
     X, y = preprocess()
-
+   
+    # Extract series from y DataFrame
+    y = y["party"]
+    
+    print(f"y shape: {y.shape}")
+    
     # Split the data into training and testing sets
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=split_ratio, random_state=42)
 
+    print("Data split in to test and train")
+    
     if perform_search:
         # Search for best parameters
         best_params = randomized_search_model_svm(X_train, y_train)
@@ -75,12 +84,39 @@ def train_evaluate_model_svm(split_ratio: float = 0.2, perform_search: bool = Fa
 
     # Train model using `models.py`
     model = train_model_svm(X_train, y_train, best_params=best_params)
+    
+    print("Model trained")
 
     # Evaluate model using `models.py
     accuracy = evaluate_model_svm(model=model, X=X_test, y=y_test)
+    
+    print(f"Model accuracy: {accuracy}")
 
-    return model, accuracy
+    # Save model weight on the hard drive (and optionally on GCS too!)
+    print("Saving model...")
+    save_model(model=model)
+    
+    return accuracy
+
+
+def pred(X_pred: pd.DataFrame = None) -> np.ndarray:
+    
+    """ Let's make a prediction using the latest train model """
+    
+    """ We need code here that preprocesses X_pred, is that going to work with the current functions or do we need to rejig? """
+
+
+    print("Looks deeply into crystal ball...")
+    
+    model = load_model()
+    assert model is not None
+    
+    """ Here we would use model.predict(X_processed) tp create y_pred """
+    
+    print("Pretend I'm predicting something")
+    
+    return np.array([[99]])
 
 
 if __name__ == '__main__':
-    X, y = preprocess(reprocess_by_default=REPROCESS_BY_DEFAULT)
+    train_evaluate_model_svm()
