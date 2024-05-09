@@ -42,6 +42,8 @@ print("Accuracy:", accuracy)
 import joblib
 joblib.dump(model, 'logistic_regression_model.pkl')
 # KNN Model==================================================================
+
+
 features_df = pd.read_csv('../raw_data/features_1000sample_400min_600cutoff.csv')
 target_df = pd.read_csv('../raw_data/target_1000sample_400min_600cutoff.csv')
 
@@ -60,6 +62,9 @@ model.score(X_test, y_test)
 y_pred = model.predict(X_test)
 
 print(classification_report(y_pred, y_test))
+
+model.fit(features_df, target_df)
+joblib.dump(model, '../models/KNN_model.pkl')
 
 # Logistic Regression Model=====================================================
 features_df = pd.read_csv('../raw_data/features_1000sample_400min_600cutoff.csv')
@@ -80,6 +85,9 @@ model.score(X_test, y_test)
 y_pred = model.predict(X_test)
 
 print(classification_report(y_pred, y_test))
+model.fit(features_df, target_df)
+import joblib
+joblib.dump(model, '../models/logistic_regression_model.pkl')
 
 # SGDClassifier=====================================================
 
@@ -101,3 +109,20 @@ model.score(X_test, y_test)
 y_pred = model.predict(X_test)
 
 print(classification_report(y_pred, y_test))
+
+model.fit(features_df, target_df)
+import joblib
+joblib.dump(model, '../models/SGDClassifier_model.pkl')
+
+def save_model(X, y, model, model_name):
+    model.fit(X, y)
+    joblib.dump(model, f'../models/{model_name}.pkl')
+
+model = KNeighborsClassifier()
+save_model(features_df, target_df, model, 'KNeighborsClassifier')
+
+model = LogisticRegression()
+save_model(features_df, target_df, model, 'LogisticRegression')
+
+model = SGDClassifier()
+save_model(features_df, target_df, model, 'SGDClassifier')
