@@ -18,18 +18,12 @@ app.add_middleware(
 
 @app.get("/predict")
 def predict(speech: str) -> dict:
-    
-    word_n_full = len(speech.strip().split())
-    X_pred = pd.DataFrame(dict(
-        text=[speech],
-        word_n_full=[word_n_full]
-    ))
-    
-    y_pred = pred(X_pred)[0][0]
-    
+
+    y_pred = pred(speech)[0][0]
+   
     return dict(party = y_pred)
 
 @app.get("/")
 def root():
-    return {"greeting": "Is this thing on?"}
+    return dict(greeting = "Is this thing on?")
  
