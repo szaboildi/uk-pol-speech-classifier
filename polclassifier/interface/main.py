@@ -108,5 +108,4 @@ def train_evaluate_model_knn(split_ratio: float = 0.2, perform_search: bool = Fa
 
 
 if __name__ == '__main__':
-    X, y = preprocess(reprocess_by_default=REPROCESS_BY_DEFAULT)
     train_evaluate_model_knn(perform_search = True)

@@ -1,6 +1,5 @@
 import pandas as pd
 import numpy as np
-
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.neighbors import KNeighborsClassifier
@@ -71,7 +70,7 @@ def randomized_search_model_knn(X, y):
     'leaf_size': LEAF_SIZE
     }
 
-    # Create an SVM classifier
+    # Create an KNN classifier
     knn_classifier = KNeighborsClassifier()
 
     # Perform random search cross-validation
