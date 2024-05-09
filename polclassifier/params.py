@@ -32,6 +32,9 @@ KERNEL_DEFAULT = "linear"
 GAMMA_DEFAULT = "scale"
 C_DEFAULT = 4.2
 
+# Randomized search parameters for model KNN
+N_NEIGHBORS = randint(1, 100)
+LEAF_SIZE = randint(1, 100)
 
 ##################  CONSTANTS  #####################
 LOCAL_PATH = os.path.join(

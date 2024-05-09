@@ -82,5 +82,32 @@ def train_evaluate_model_svm(split_ratio: float = 0.2, perform_search: bool = Fa
     return model, accuracy
 
 
+def train_evaluate_model_knn(split_ratio: float = 0.2, perform_search: bool = False):
+    print(Fore.MAGENTA + "\n⭐️ Use case: train" + Style.RESET_ALL)
+    print(Fore.BLUE + "\nLoading preprocessed validation data..." + Style.RESET_ALL)
+
+    # Retrieve data
+    X, y = preprocess()
+
+    # Split the data into training and testing sets
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=split_ratio, random_state=42)
+
+    if perform_search:
+        # Search for best parameters
+        best_params = randomized_search_model_knn(X_train, y_train)
+    else:
+        # Use default parameters
+        best_params = None
+
+    # Train model using `models.py`
+    model = train_model_knn(X_train, y_train, best_params=best_params)
+
+    # Evaluate model using `models.py
+    accuracy = evaluate_model_knn(model=model, X=X_test, y=y_test)
+
+    return model, accuracy
+
+
 if __name__ == '__main__':
     X, y = preprocess(reprocess_by_default=REPROCESS_BY_DEFAULT)
+    train_evaluate_model_knn(perform_search = True)

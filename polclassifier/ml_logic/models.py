@@ -62,3 +62,46 @@ def evaluate_model_svm(model, X, y):
     predictions = model.predict(X)
     accuracy = accuracy_score(y, predictions)
     return accuracy
+
+
+def randomized_search_model_knn(X, y):
+    # Define the hyperparameter grid
+    param_grid = {
+    'n_neighbors':  N_NEIGHBORS,  # Penalty parameter C (regularization parameter)
+    'leaf_size': LEAF_SIZE
+    }
+
+    # Create an SVM classifier
+    knn_classifier = KNeighborsClassifier()
+
+    # Perform random search cross-validation
+    random_search = RandomizedSearchCV(knn_classifier, param_distributions=param_grid, n_iter=10, scoring='accuracy', cv=5, n_jobs=-1)
+    random_search.fit(X, y)
+
+    # Best hyperparameters found
+    best_params = random_search.best_params_
+
+    # Print best hyperparameters and best cross-validation score
+    print("Best Hyperparameters:", best_params)
+    print("Best Cross-validation Score:", random_search.best_score_)
+
+    # Return the best parameters
+    return best_params
+
+def train_model_knn(X, y, best_params=None):
+    if best_params is None:
+        # If best_params is not provided, train the model with default parameters
+        model = KNeighborsClassifier()
+    else:
+        # If best_params is provided, extract kernel and penalty_c from it
+        n_neighbors = best_params['n_neighbors']
+        leaf_size = best_params['leaf_size']
+        model = KNeighborsClassifier(n_neighbors=n_neighbors, leaf_size=leaf_size)
+
+    model.fit(X, y)
+    return model
+
+def evaluate_model_knn(model, X, y):
+    predictions = model.predict(X)
+    accuracy = accuracy_score(y, predictions)
+    return accuracy
