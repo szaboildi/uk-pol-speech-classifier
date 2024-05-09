@@ -7,7 +7,9 @@ PROJECT_LEAD = "szaboildi"
 PROJECT_NAME = "uk-pol-speech-classifier"
 
 ########### Constants ###############
-LOCAL_REGISTRY_PATH =  os.path.join(os.path.expanduser('~'), ".lewagon", "polclassifier", "training_outputs")
+LOCAL_PATH = os.path.join(
+    os.path.expanduser('~'), "code", PROJECT_LEAD, PROJECT_NAME)
+LOCAL_REGISTRY_PATH =  os.path.join(LOCAL_PATH, "polclassifier", "training_outputs")
 
 # Preprocessing variables
 REPROCESS_BY_DEFAULT = False # Should raw data be reprocessed even if it's already cached
@@ -35,11 +37,6 @@ KERNEL_DEFAULT = "linear"
 GAMMA_DEFAULT = "scale"
 C_DEFAULT = 4.2
 
-# Not sure where to put this 
+# Not sure where to put this
 
 MODEL_TARGET = "local"
-
-
-##################  CONSTANTS  #####################
-LOCAL_PATH = os.path.join(
-    os.path.expanduser('~'), "code", PROJECT_LEAD, PROJECT_NAME)
