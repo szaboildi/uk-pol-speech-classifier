@@ -3,8 +3,6 @@ nltk.download("stopwords")
 nltk.download("punkt")
 nltk.download("wordnet")
 
-# from nltk.corpus import stopwords
-# stop_words = set(stopwords.words('english'))
 import os
 import pandas as pd
 from colorama import Fore, Style
@@ -12,11 +10,14 @@ from colorama import Fore, Style
 import string
 from nltk import word_tokenize
 from nltk.stem import WordNetLemmatizer
-
-from sklearn.preprocessing import OneHotEncoder
 from sklearn.feature_extraction.text import TfidfVectorizer
 
+from sklearn.preprocessing import OneHotEncoder
 
+from tensorflow.keras.preprocessing.text import Tokenizer
+from tensorflow.keras.preprocessing.sequence import pad_sequences
+import gensim.downloader as api
+from nltk.corpus import stopwords
 
 
 def clean_data(df, min_word_count=400, sample_size=1000, parties_to_exclude=[]):
@@ -160,3 +161,31 @@ def save_processed_to_cache(
     X.to_csv(X_path, index=False)
     y.to_csv(y_path, index=False)
     return
+
+
+def embed_and_pad(X, embedding, stop_words=stop_words):
+    X_embed = embed_sentences(X, embedding, stop_words)
+    
+    maxlen = max([len(x) for x in X_embed])
+    X_pad = pad_sequences(X_embed, dtype='float32', padding='post', maxlen=maxlen)
+
+
+
+# Function to convert a sentence (list of words) into a matrix representing the words in the embedding space
+def embed_sentence_with_TF(sentence, embedding, stop_words=stop_words):
+    embedded_sentence = []
+    for word in sentence:
+        if word in embedding and word not in stop_words:
+            embedded_sentence.append(embedding[word])
+        
+    return np.array(embedded_sentence)
+
+# Function that converts a list of sentences into a list of matrices
+def embed_sentences(embedding, sentences):
+    embed = []
+    
+    for sentence in sentences:
+        embedded_sentence = embed_sentence_with_TF(embedding, sentence.split())
+        embed.append(embedded_sentence)
+        
+    return embed
