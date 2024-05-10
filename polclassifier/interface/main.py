@@ -16,10 +16,10 @@ def preprocess(reprocess_by_default=False):
 
     X_path = os.path.join(
         LOCAL_PATH, "processed_data",
-        f"features_{SAMPLE_SIZE}sample_{MIN_WORD_COUNT}min_{MAX_WORD_COUNT}cutoff.csv")
+        f"features_{SAMPLE_SIZE}sample_{MIN_WORD_COUNT}min_{MAX_WORD_COUNT}cutoff_{VECT_METHOD}.csv")
     y_path = os.path.join(
         LOCAL_PATH, "processed_data",
-        f"target_{SAMPLE_SIZE}sample_{MIN_WORD_COUNT}min_{MAX_WORD_COUNT}cutoff.csv")
+        f"target_{SAMPLE_SIZE}sample_{MIN_WORD_COUNT}min_{MAX_WORD_COUNT}cutoff_{VECT_METHOD}.csv")
 
     # Check cache
     # if there, load from there
@@ -51,7 +51,8 @@ def preprocess(reprocess_by_default=False):
 
         save_processed_to_cache(
             pd.DataFrame(X), y, local_path=LOCAL_PATH, sample_size=SAMPLE_SIZE,
-            min_word_count=MIN_WORD_COUNT, max_word_count=MAX_WORD_COUNT)
+            min_word_count=MIN_WORD_COUNT, max_word_count=MAX_WORD_COUNT,
+            vect_method=VECT_METHOD)
 
         print("✅ X and y saved to cache \n")
 
@@ -85,7 +86,7 @@ def train_evaluate_model_svm(split_ratio: float = 0.2, perform_search: bool = Fa
     # Train model using `models.py`
     model = train_model_svm(X_train, y_train, best_params=best_params)
 
-    print("Model trained")
+    print("✅ Model trained \n")
 
     # Evaluate model using `models.py
     accuracy = evaluate_model_svm(model=model, X=X_test, y=y_test)
@@ -94,6 +95,7 @@ def train_evaluate_model_svm(split_ratio: float = 0.2, perform_search: bool = Fa
 
     # Save model weight on the hard drive (and optionally on GCS too!)
     print("Saving model...")
+
     save_model_sklearn(model=model)
 
     return accuracy
@@ -126,6 +128,7 @@ def pred_sklearn(speech: str = None) -> np.ndarray:
 
     print("... and vectorizing! ✅ \n")
 
+    
     # Load model functionality specific to ML models
     model = load_model_sklearn()
     assert model is not None
@@ -178,4 +181,3 @@ def pred_keras(X_pred: pd.DataFrame = None) -> np.ndarray:
 
 if __name__ == '__main__':
     train_evaluate_model_svm()
-    pred_sklearn("I have a dream")
