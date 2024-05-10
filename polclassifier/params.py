@@ -37,6 +37,5 @@ KERNEL_DEFAULT = "linear"
 GAMMA_DEFAULT = "scale"
 C_DEFAULT = 4.2
 
-# Not sure where to put this
-
+# Registry paramters
 MODEL_TARGET = "local"
