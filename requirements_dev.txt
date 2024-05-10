@@ -1,4 +1,5 @@
 colorama
+gensim
 nltk
 pandas==2.2.2
 pyarrow==14.0.1
