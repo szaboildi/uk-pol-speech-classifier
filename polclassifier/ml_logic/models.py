@@ -1,9 +1,15 @@
-import numpy as np
 import pandas as pd
-from sklearn.model_selection import cross_val_score
-from sklearn.model_selection import RandomizedSearchCV
-from sklearn.metrics import accuracy_score
+import numpy as np
+
+
+from sklearn.linear_model import LogisticRegression, SGDClassifier
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import accuracy_score, classification_report, accuracy_score
+from sklearn.model_selection import train_test_split, cross_val_score, RandomizedSearchCV
 from sklearn.svm import SVC
+
+from colorama import Fore, Style
+import joblib
 
 from polclassifier.params import *
 
@@ -19,6 +25,7 @@ end = time.perf_counter()
 print(f"\n✅ TensorFlow loaded ({round(end - start, 2)}s)")
 
 def randomized_search_model_svm(X, y):
+    print("Grid searching SVM model\n")
     # Define the hyperparameter grid
     param_grid = {
     'C': PENALTY_C,  # Penalty parameter C (regularization parameter)
@@ -31,13 +38,16 @@ def randomized_search_model_svm(X, y):
     svm_classifier = SVC()
 
     # Perform random search cross-validation
-    random_search = RandomizedSearchCV(svm_classifier, param_distributions=param_grid, n_iter=10, scoring='accuracy', cv=5, n_jobs=-1)
+    random_search = RandomizedSearchCV(
+        svm_classifier, param_distributions=param_grid, n_iter=10,
+        scoring='accuracy', cv=5, n_jobs=-1)
     random_search.fit(X, y)
 
     # Best hyperparameters found
     best_params = random_search.best_params_
 
     # Print best hyperparameters and best cross-validation score
+    print("✅ Best hyperparams found")
     print("Best Hyperparameters:", best_params)
     print("Best Cross-validation Score:", random_search.best_score_)
 
@@ -55,6 +65,7 @@ def train_model_svm(X, y, best_params=None):
         model = SVC(kernel=kernel_name, C=penalty_c)
 
     model.fit(X, y)
+    print("✅ Model fit \n")
     return model
 
 def evaluate_model_svm(model, X, y):
