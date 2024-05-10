@@ -12,22 +12,17 @@ from google.cloud import storage
 from polclassifier.params import *
 
 
-def save_model_sklearn(model = None) -> None:
+def save_model_keras(model: keras.Model = None) -> None:
 
     timestamp = time.strftime("%Y%m%d-%H%M%S")
 
-    # If the output folder is missing, make it first
-    if not os.path.isdir(os.path.join(LOCAL_REGISTRY_PATH, "models")):
-        os.mkdir(os.path.join(LOCAL_REGISTRY_PATH, "models"))
-
     # Save model locally
-    model_path = os.path.join(LOCAL_REGISTRY_PATH, "models", f"{timestamp}.pkl")
-    joblib.dump(model, model_path)
+    model_path = os.path.join(LOCAL_REGISTRY_PATH, "models", f"{timestamp}.h5")
+    model.save(model_path)
 
     print("✅ Model saved locally")
 
     if MODEL_TARGET == "gcs":
-
         model_filename = model_path.split("/")[-1] # e.g. "20230208-161047.h5" for instance
         client = storage.Client()
         bucket = client.bucket(BUCKET_NAME)
@@ -40,24 +35,17 @@ def save_model_sklearn(model = None) -> None:
 
     return None
 
-
-def save_model_keras(model: keras.Model = None) -> None:
+def save_model_sklearn(model = None) -> None:
 
     timestamp = time.strftime("%Y%m%d-%H%M%S")
 
-
-    # If the output folder is missing, make it first
-    if not os.path.isdir(os.path.join(LOCAL_REGISTRY_PATH, "models")):
-        os.mkdir(os.path.join(LOCAL_REGISTRY_PATH, "models"))
-
     # Save model locally
-    model_path = os.path.join(LOCAL_REGISTRY_PATH, "models", f"{timestamp}.h5")
-    model.save(model_path)
+    model_path = os.path.join(LOCAL_REGISTRY_PATH, "models", f"{timestamp}.pkl")
+    joblib.dump(model, model_path)
 
     print("✅ Model saved locally")
 
     if MODEL_TARGET == "gcs":
-
         model_filename = model_path.split("/")[-1] # e.g. "20230208-161047.h5" for instance
         client = storage.Client()
         bucket = client.bucket(BUCKET_NAME)
@@ -121,8 +109,6 @@ def load_model_keras() -> keras.Model:
 
     return None
 
-
-
 def load_model_sklearn():
 
     if MODEL_TARGET == "local":
@@ -174,70 +160,4 @@ def load_model_sklearn():
     print("\n❌ Model target not recognised")
 
 
-    return None
-
-
-def save_vectorizer(vectorizer=None, min_df=5, max_df=0.85, max_features=10000) -> None:
-
-    # If the output folder is missing, make it first
-    if not os.path.isdir(os.path.join(LOCAL_REGISTRY_PATH, "vectorizers")):
-        os.mkdir(os.path.join(LOCAL_REGISTRY_PATH, "vectorizers"))
-
-    # Save vectorizer locally
-    vect_path = os.path.join(LOCAL_REGISTRY_PATH, "vectorizers", f"{min_df}-{max_df}-{max_features}.pkl")
-    joblib.dump(vectorizer, vect_path)
-
-    print("✅ Vectorizer saved locally")
-
-    if MODEL_TARGET == "gcs":
-
-        vect_filename = vect_path.split("/")[-1] # e.g. "20230208-161047.h5" for instance
-        client = storage.Client()
-        bucket = client.bucket(BUCKET_NAME)
-        blob = bucket.blob(f"vectorizers/{vect_filename}")
-        blob.upload_from_filename(vect_path)
-
-        print("✅ Model saved to GCS")
-
-        return None
-
-    return None
-
-
-def load_vectorizer(min_df=5, max_df=0.85, max_features=10000):
-
-    if MODEL_TARGET == "local":
-        print(Fore.BLUE + f"\nLoad vectorizer with params {min_df}, {max_df}, {max_features}" + Style.RESET_ALL)
-
-        vect_path = os.path.join(LOCAL_REGISTRY_PATH, "vectorizers", f"{min_df}-{max_df}-{max_features}.pkl")
-        vectorizer = joblib.load(vect_path)
-
-        print("✅ Model loaded from local disk")
-
-        return vectorizer
-
-    elif MODEL_TARGET == "gcs":
-
-        print(Fore.BLUE + f"\nLoad vectorizer with params {min_df}, {max_df}, {max_features} from GCS..." + Style.RESET_ALL)
-
-        client = storage.Client()
-        blobs = list(client.get_bucket(BUCKET_NAME).list_blobs(prefix="vectorizers"))
-
-        try:
-            vect_name = f"{min_df}-{max_df}-{max_features}.pkl"
-            vect_blob = next((blob for blob in blobs if blob.name == vect_name), None)
-            vect_path_to_save = os.path.join(LOCAL_REGISTRY_PATH, vect_blob.name)
-            vect_blob.download_to_filename(vect_path_to_save)
-
-            vectorizer = joblib.load(vect_path_to_save)
-
-            print("✅ Vectorizer downloaded from cloud storage")
-
-            return vectorizer
-
-        except:
-
-            print(f"\n❌ No model found in GCS bucket {BUCKET_NAME}")
-
-    print("\n❌ Model target not recognised")
     return None

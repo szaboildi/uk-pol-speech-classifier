@@ -3,18 +3,28 @@ import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 
+from sklearn.model_selection import train_test_split
+
 from polclassifier.interface.main import preprocess
 
 
-def plot_confusion_matrix(model):
+def plot_confusion_matrix(model, vect_method="tfidf"):
     # Load data
-    X_test, y_test = preprocess()
-    X_test = X_test["text"]
-    y_test = y_test["party"]
-    labels = list(y_test.unique())
+    X, y = preprocess()
+    
+    if vect_method=="embed":
+        if len(X.shape) > 1:
+            X = X["text"]
+            
+    if len(y.shape) > 1:
+        y = y["party"]
+    labels = list(y.unique())
 
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    
     # Generate predictions
     y_pred = model.predict(X_test)
+    print("prediction made")
 
     # Calculate confusion matrix
     cm = confusion_matrix(y_test, y_pred)
