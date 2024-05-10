@@ -1,6 +1,11 @@
 import os
 from scipy.stats import uniform, randint
 
+########### Constants ###############
+LOCAL_PATH = os.path.join(
+    os.path.expanduser('~'), "code", PROJECT_LEAD, PROJECT_NAME)
+LOCAL_REGISTRY_PATH =  os.path.join(LOCAL_PATH, "training_outputs")
+
 ##################  VARIABLES  ##################
 # Github
 PROJECT_LEAD = "szaboildi"
@@ -33,8 +38,6 @@ GAMMA_DEFAULT = "scale"
 C_DEFAULT = 4.2
 
 # Parameters for embedding
-EMBEDDING = 
+EMBEDDING = "glove-wiki-gigaword-100" # code of embedding from gensim
 
-##################  CONSTANTS  #####################
-LOCAL_PATH = os.path.join(
-    os.path.expanduser('~'), "code", PROJECT_LEAD, PROJECT_NAME)
+MODEL_TARGET = "local"
