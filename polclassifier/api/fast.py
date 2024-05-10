@@ -1,7 +1,7 @@
 import pandas as pd
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from polclassifier.interface.main import pred
+from polclassifier.interface.main import pred_sklearn
 
 
 app = FastAPI()
@@ -19,11 +19,10 @@ app.add_middleware(
 @app.get("/predict")
 def predict(speech: str) -> dict:
 
-    y_pred = pred(speech)[0][0]
-   
+    y_pred = pred_sklearn(speech)[0]
+
     return dict(party = y_pred)
 
 @app.get("/")
 def root():
     return dict(greeting = "Is this thing on?")
- 
