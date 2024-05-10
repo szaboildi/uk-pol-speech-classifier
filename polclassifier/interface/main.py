@@ -85,7 +85,7 @@ def train_evaluate_model_svm(split_ratio: float = 0.2, perform_search: bool = Fa
     # Train model using `models.py`
     model = train_model_svm(X_train, y_train, best_params=best_params)
 
-    print("Model trained")
+    print("✅ Model trained \n")
 
     # Evaluate model using `models.py
     accuracy = evaluate_model_svm(model=model, X=X_test, y=y_test)
