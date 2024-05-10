@@ -193,7 +193,7 @@ def train_evaluate_model_knn(split_ratio: float = 0.2, perform_search: bool = Fa
         best_params = randomized_search_model_knn(X_train, y_train)
     else:
         # Use default parameters
-        best_params = None
+        best_params = {'weights': WEIGHTS_DEFAULT, 'n_neighbors': N_NEIGHBORS_DEFAULT, 'leaf_size': LEAF_SIZE_DEFAULT}
 
     # Train model using `models.py`
     model = train_model_knn(X_train, y_train, best_params=best_params)
@@ -201,9 +201,11 @@ def train_evaluate_model_knn(split_ratio: float = 0.2, perform_search: bool = Fa
     # Evaluate model using `models.py
     accuracy = evaluate_model_knn(model=model, X=X_test, y=y_test)
 
+    save_model_sklearn(model=model)
+
     return model, accuracy
 
 
 if __name__ == '__main__':
-    train_evaluate_model_knn(perform_search = True)
-    train_evaluate_model_svm()
+    train_evaluate_model_knn()
+    #train_evaluate_model_svm()

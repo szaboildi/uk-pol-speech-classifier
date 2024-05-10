@@ -112,3 +112,12 @@ def evaluate_model_knn(model, X, y):
     predictions = model.predict(X)
     accuracy = accuracy_score(y, predictions)
     return accuracy
+
+if __name__ == '__main__':
+    features_path= os.path.join(os.path.dirname(__file__), "../../raw_data/features_1000sample_400min_600cutoff.csv")
+    features_df = pd.read_csv(features_path)
+    target_path= os.path.join(os.path.dirname(__file__), "../../raw_data/target_1000sample_400min_600cutoff.csv")
+    target_df = pd.read_csv(target_path)
+    features_df.drop(columns = ['Unnamed: 0'], inplace = True)
+    target_df.drop(columns = ['Unnamed: 0'], inplace = True)
+    train_model_knn(features_df, target_df)
