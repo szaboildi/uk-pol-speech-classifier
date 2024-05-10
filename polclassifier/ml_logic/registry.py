@@ -77,7 +77,7 @@ def load_model_keras() -> keras.Model:
         print(Fore.BLUE + f"\nLoad latest model from local registry..." + Style.RESET_ALL)
 
         # Get the latest model version name by the timestamp on disk
-        local_model_directory = os.path.join(LOCAL_REGISTRY_PATH, "models")
+        local_model_directory = os.path.join("training_outputs", "models")
         local_model_paths = glob.glob(f"{local_model_directory}/*")
 
         if not local_model_paths:
@@ -129,7 +129,7 @@ def load_model_sklearn():
         print(Fore.BLUE + f"\nLoad latest model from local registry..." + Style.RESET_ALL)
 
         # Get the latest model version name by the timestamp on disk
-        local_model_directory = os.path.join(LOCAL_REGISTRY_PATH, "models")
+        local_model_directory = os.path.join("training_outputs", "models")
         local_model_paths = glob.glob(f"{local_model_directory}/*")
 
 
@@ -140,7 +140,7 @@ def load_model_sklearn():
 
         print(Fore.BLUE + f"\nLoad latest model from disk..." + Style.RESET_ALL)
 
-        latest_path = os.path.join(LOCAL_REGISTRY_PATH, "models", most_recent_model_path_on_disk)
+        latest_path = os.path.join(most_recent_model_path_on_disk)
         latest_model = joblib.load(latest_path)
 
         print("✅ Model loaded from local disk")
@@ -209,7 +209,7 @@ def load_vectorizer(min_df=5, max_df=0.85, max_features=10000):
     if MODEL_TARGET == "local":
         print(Fore.BLUE + f"\nLoad vectorizer with params {min_df}, {max_df}, {max_features}" + Style.RESET_ALL)
 
-        vect_path = os.path.join(LOCAL_REGISTRY_PATH, "vectorizers", f"{min_df}-{max_df}-{max_features}.pkl")
+        vect_path = os.path.join("training_outputs", "vectorizers", f"{min_df}-{max_df}-{max_features}.pkl")
         vectorizer = joblib.load(vect_path)
 
         print("✅ Model loaded from local disk")

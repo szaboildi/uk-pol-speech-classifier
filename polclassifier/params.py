@@ -42,5 +42,8 @@ C_DEFAULT = 4.2
 MODEL_TARGET = "local"
 GAR_IMAGE="polclassifier"
 
+GCP_PROJECT="le-wagon-bootcamp-setup"
+GCP_REGION="europe-west1"
+
 
 BUCKET_NAME = "polclassifier-jonahramchandani"
