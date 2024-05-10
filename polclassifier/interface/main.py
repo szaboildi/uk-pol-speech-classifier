@@ -65,8 +65,9 @@ def train_evaluate_model_svm(split_ratio: float = 0.2, perform_search: bool = Fa
     # Retrieve data
     X, y = preprocess()
 
-    # Extract series from y DataFrame
-    y = y["party"]
+    # Extract series from y if saved as a DataFrame
+    if len(y.shape) > 1:
+        y = y['party']
 
     print(f"y shape: {y.shape}")
 
@@ -100,23 +101,82 @@ def train_evaluate_model_svm(split_ratio: float = 0.2, perform_search: bool = Fa
     return accuracy
 
 
-def pred(X_pred: pd.DataFrame = None) -> np.ndarray:
+def pred_sklearn(speech: str = None) -> np.ndarray:
 
-    """ Let's make a prediction using the latest train model """
+    """ Let's make a prediction using the latest ML model """
 
-    """ We need code here that preprocesses X_pred, is that going to work with the current functions or do we need to rejig? """
+    # Create X_pred dataframe consisting of speech text and word count
+    word_n_full = len(speech.strip().split())
 
+    X_pred = pd.DataFrame(dict(
+        text=[speech],
+        word_n_full=[word_n_full],
+    ))
 
-    print("Looks deeply into crystal ball...")
+    print("✅ Input string converted to dataframe, now preprocessing...\n")
 
-    model = load_model()
+    # Preprocess the input data
+    X_processed = preprocess_text_col(X_pred)
+
+    # Vectorise the processed text... HOW?
+
+    if VECT_METHOD=="tfidf":
+
+        tf_idf_vectorizer = load_vectorizer(min_df=MIN_DF, max_df=MAX_DF, max_features=MAX_FEATURES)
+
+        X_vectorized = tf_idf_vectorizer.transform(X_processed).toarray()
+
+    print("... and vectorizing! ✅ \n")
+
+    
+    # Load model functionality specific to ML models
+    model = load_model_sklearn()
     assert model is not None
 
-    """ Here we would use model.predict(X_processed) tp create y_pred """
+    y_pred = model.predict(X_vectorized)
 
-    print("Pretend I'm predicting something")
+    print(f"✅ And the winner is ... {y_pred}")
 
-    return np.array([[99]])
+    return y_pred
+
+
+def pred_keras(X_pred: pd.DataFrame = None) -> np.ndarray:
+
+    """ Let's make a prediction using the latest DL model """
+
+    # Create X_pred dataframe consisting of speech text and word count
+    word_n_full = len(speech.strip().split())
+
+    X_pred = pd.DataFrame(dict(
+        text=[speech],
+        word_n_full=[word_n_full],
+    ))
+
+    print("✅ Input string converted to dataframe, now preprocessing...\n")
+
+    # Preprocess the input data
+    X_processed = preprocess_text_col(X_pred)
+
+    if vect_method=="tfidf":
+
+    # Vectorizing
+        tf_idf_vectorizer = TfidfVectorizer(
+            min_df=5, max_df=0.85, max_features=10000,
+            stop_words="english")
+
+        X_vectorized = tf_idf_vectorizer.fit_transform(X_processed).toarray()
+
+    print("... and vectorizing! ✅ \n")
+
+    # Load model functionality specific to DL models
+    model = load_model_keras()
+    assert model is not None
+
+    y_pred = model.predict(X_vectorized)
+
+    print(f"✅ And the winner is ... {y_pred}")
+
+    return y_pred
 
 
 if __name__ == '__main__':

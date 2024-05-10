@@ -17,7 +17,7 @@ from nltk.stem import WordNetLemmatizer
 # from sklearn.preprocessing import OneHotEncoder
 from sklearn.feature_extraction.text import TfidfVectorizer
 
-
+from polclassifier.ml_logic.registry import *
 
 
 def clean_data(df, min_word_count=400, sample_size=1000, parties_to_exclude=[]):
@@ -131,8 +131,10 @@ def preprocess_all(df, min_word_count=400, sample_size=1000, parties_to_exclude=
             stop_words="english")
 
         X = tf_idf_vectorizer.fit_transform(X).toarray()
-
         print("✅ X vectorized (TfIDf) \n")
+        
+        # Save vectorizer for transformation of X_pred
+        save_vectorizer(tf_idf_vectorizer, min_df=min_df, max_df=max_df, max_features=max_features)
 
     return X, y
 
