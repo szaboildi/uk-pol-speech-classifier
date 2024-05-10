@@ -38,7 +38,7 @@ C_DEFAULT = 4.2
 # Not sure where to put this
 
 MODEL_TARGET = "local"
-BUCKET_NAME = "polclassifier-jonahramchandani"
+GAR_IMAGE="polclassifier"
 
 
 ##################  CONSTANTS  #####################
