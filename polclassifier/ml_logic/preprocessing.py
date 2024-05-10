@@ -109,7 +109,7 @@ def preprocess_text_col(
 
 def preprocess_all(df, min_word_count=400, sample_size=1000, parties_to_exclude=[],
                    max_word_count=600, extract_from="middle",
-                   min_df=5, max_df=0.85, max_features=10000, vect_method="tfidf"):
+                   min_df=5, max_df=0.85, max_features=10000, vect_method="tfidf", local_path=None):
     """Preprocess all data"""
     df = clean_data(df, min_word_count=min_word_count, sample_size=sample_size,
                     parties_to_exclude=parties_to_exclude)
@@ -133,15 +133,15 @@ def preprocess_all(df, min_word_count=400, sample_size=1000, parties_to_exclude=
 
         print("✅ X vectorized (TfIDf) \n")
         
-    elif vect_method=="embed":
-        codes = pd.DataFrame(list(enumerate(y["party"].unique())))
+    elif vect_method=="for_embed":
+        codes = pd.DataFrame(list(enumerate(y.unique())))
         codes.rename(columns={0:"party_id", 1: "party_name"}, inplace=True)
         codes.to_csv(os.path.join(
             local_path, "processed_data",
             f"targetcodes_{sample_size}sample_{min_word_count}min_{max_word_count}cutoff_{vect_method}.csv"), 
                      index=False)
 
-        y = OneHotEncoder(sparse_output=False).fit_transform(y["party"].values.reshape(-1, 1))
+        y = pd.DataFrame(OneHotEncoder(sparse_output=False).fit_transform(y.values.reshape(-1, 1)))
 
     return X, y
 

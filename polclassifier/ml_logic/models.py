@@ -1,14 +1,10 @@
 import pandas as pd
 import numpy as np
-from sklearn.model_selection import train_test_split
-from sklearn.linear_model import LogisticRegression
+
+from sklearn.linear_model import LogisticRegression, SGDClassifier
 from sklearn.neighbors import KNeighborsClassifier
-from sklearn.linear_model import SGDClassifier
-from sklearn.metrics import accuracy_score
-from sklearn.metrics import classification_report
-from sklearn.model_selection import cross_val_score
-from sklearn.model_selection import RandomizedSearchCV
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import accuracy_score, classification_report, accuracy_score
+from sklearn.model_selection import train_test_split, cross_val_score, RandomizedSearchCV
 from sklearn.svm import SVC
 
 from polclassifier.params import *
