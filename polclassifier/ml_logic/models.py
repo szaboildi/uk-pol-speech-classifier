@@ -67,14 +67,15 @@ def randomized_search_model_knn(X, y):
     # Define the hyperparameter grid
     param_grid = {
     'n_neighbors':  N_NEIGHBORS,  # Penalty parameter C (regularization parameter)
-    'leaf_size': LEAF_SIZE
+    'leaf_size': LEAF_SIZE,
+    'weights': ['uniform', 'distance']
     }
 
     # Create an KNN classifier
     knn_classifier = KNeighborsClassifier()
 
     # Perform random search cross-validation
-    random_search = RandomizedSearchCV(knn_classifier, param_distributions=param_grid, n_iter=10, scoring='accuracy', cv=5, n_jobs=-1)
+    random_search = RandomizedSearchCV(knn_classifier, param_distributions=param_grid, n_iter=100,  scoring='accuracy', cv=5, n_jobs=-1)
     random_search.fit(X, y)
 
     # Best hyperparameters found
