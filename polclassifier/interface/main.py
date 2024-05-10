@@ -43,7 +43,7 @@ def preprocess(reprocess_by_default=False):
             parties_to_exclude=PARTIES_TO_EXCLUDE,
             max_word_count=MAX_WORD_COUNT, extract_from=EXTRACT_FROM,
             min_df=MIN_DF, max_df=MAX_DF, max_features=MAX_FEATURES,
-            vect_method=VECT_METHOD)
+            vect_method=VECT_METHOD, local_path=LOCAL_PATH)
 
         print("✅ X and y preprocessed \n")
 
