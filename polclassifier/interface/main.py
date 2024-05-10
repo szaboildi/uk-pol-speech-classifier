@@ -14,10 +14,10 @@ def preprocess(reprocess_by_default=False):
 
     X_path = os.path.join(
         LOCAL_PATH, "processed_data",
-        f"features_{SAMPLE_SIZE}sample_{MIN_WORD_COUNT}min_{MAX_WORD_COUNT}cutoff.csv")
+        f"features_{SAMPLE_SIZE}sample_{MIN_WORD_COUNT}min_{MAX_WORD_COUNT}cutoff_{VECT_METHOD}.csv")
     y_path = os.path.join(
         LOCAL_PATH, "processed_data",
-        f"target_{SAMPLE_SIZE}sample_{MIN_WORD_COUNT}min_{MAX_WORD_COUNT}cutoff.csv")
+        f"target_{SAMPLE_SIZE}sample_{MIN_WORD_COUNT}min_{MAX_WORD_COUNT}cutoff_{VECT_METHOD}.csv")
 
     # Check cache
     # if there, load from there
@@ -49,7 +49,8 @@ def preprocess(reprocess_by_default=False):
 
         save_processed_to_cache(
             pd.DataFrame(X), y, local_path=LOCAL_PATH, sample_size=SAMPLE_SIZE,
-            min_word_count=MIN_WORD_COUNT, max_word_count=MAX_WORD_COUNT)
+            min_word_count=MIN_WORD_COUNT, max_word_count=MAX_WORD_COUNT,
+            vect_method=VECT_METHOD)
 
         print("✅ X and y saved to cache \n")
 
