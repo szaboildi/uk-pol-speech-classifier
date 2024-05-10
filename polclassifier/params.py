@@ -12,14 +12,14 @@ LOCAL_PATH = os.path.join(
 LOCAL_REGISTRY_PATH = os.path.join(LOCAL_PATH, "training_outputs")
 
 # Preprocessing variables
-REPROCESS_BY_DEFAULT = False # Should raw data be reprocessed even if it's already cached
+REPROCESS_BY_DEFAULT = True # Should raw data be reprocessed even if it's already cached
 
 MIN_WORD_COUNT = 400
 SAMPLE_SIZE = 1000
 PARTIES_TO_EXCLUDE = [] # list of strings with party names to exclude
 MAX_WORD_COUNT = 600
 EXTRACT_FROM = "middle" # Possible values: "start", "middle", "end"
-VECT_METHOD = "tfidf" # Possible values: "tfidf", "for_embed"
+VECT_METHOD = "for_embed" # Possible values: "tfidf", "for_embed"
 
 # Tfidf vectorizer params
 MIN_DF = 5
