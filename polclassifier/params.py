@@ -5,6 +5,11 @@ from scipy.stats import uniform, randint
 PROJECT_LEAD = "szaboildi"
 PROJECT_NAME = "uk-pol-speech-classifier"
 
+########### Constants ###############
+LOCAL_PATH = os.path.join(
+    os.path.expanduser('~'), "code", PROJECT_LEAD, PROJECT_NAME)
+LOCAL_REGISTRY_PATH = os.path.join(LOCAL_PATH, "training_outputs")
+
 # Preprocessing variables
 REPROCESS_BY_DEFAULT = False # Should raw data be reprocessed even if it's already cached
 
@@ -34,7 +39,9 @@ C_DEFAULT = 4.2
 # Randomized search parameters for model KNN
 N_NEIGHBORS = list(range(3, 50))
 LEAF_SIZE = list(range(1, 10))
+# Not sure where to put this
 
-##################  CONSTANTS  #####################
-LOCAL_PATH = os.path.join(
-    os.path.expanduser('~'), "code", PROJECT_LEAD, PROJECT_NAME)
+MODEL_TARGET = "local"
+
+
+BUCKET_NAME = "polclassifier-jonahramchandani"
