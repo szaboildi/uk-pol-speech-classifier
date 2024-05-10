@@ -140,15 +140,15 @@ def preprocess_all(df, min_word_count=400, sample_size=1000, parties_to_exclude=
 
 
 def save_processed_to_cache(
-    X, y, local_path,
-    sample_size=1000, min_word_count=400, max_word_count=600):
+    X, y, local_path, sample_size=1000, min_word_count=400, max_word_count=600,
+    vect_method="_"):
     """Caches X and y to local"""
     X_path = os.path.join(
         local_path, "processed_data",
-        f"features_{sample_size}sample_{min_word_count}min_{max_word_count}cutoff.csv")
+        f"features_{sample_size}sample_{min_word_count}min_{max_word_count}cutoff_{vect_method}.csv")
     y_path = os.path.join(
         local_path, "processed_data",
-        f"target_{sample_size}sample_{min_word_count}min_{max_word_count}cutoff.csv")
+        f"target_{sample_size}sample_{min_word_count}min_{max_word_count}cutoff_{vect_method}.csv")
 
     X.to_csv(X_path, index=False)
     y.to_csv(y_path, index=False)

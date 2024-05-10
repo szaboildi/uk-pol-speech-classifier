@@ -7,7 +7,9 @@ PROJECT_LEAD = "szaboildi"
 PROJECT_NAME = "uk-pol-speech-classifier"
 
 ########### Constants ###############
-LOCAL_REGISTRY_PATH =  os.path.join(os.path.expanduser('~'), "code", PROJECT_LEAD, PROJECT_NAME, "training_outputs")
+LOCAL_PATH = os.path.join(
+    os.path.expanduser('~'), "code", PROJECT_LEAD, PROJECT_NAME)
+LOCAL_REGISTRY_PATH = os.path.join(LOCAL_PATH, "training_outputs")
 
 # Preprocessing variables
 REPROCESS_BY_DEFAULT = False # Should raw data be reprocessed even if it's already cached
@@ -17,7 +19,7 @@ SAMPLE_SIZE = 1000
 PARTIES_TO_EXCLUDE = [] # list of strings with party names to exclude
 MAX_WORD_COUNT = 600
 EXTRACT_FROM = "middle" # Possible values: "start", "middle", "end"
-VECT_METHOD = "tfidf" # Possible values: "tfidf"
+VECT_METHOD = "tfidf" # Possible values: "tfidf", "for_embed"
 
 # Tfidf vectorizer params
 MIN_DF = 5
@@ -38,9 +40,6 @@ C_DEFAULT = 4.2
 # Not sure where to put this
 
 MODEL_TARGET = "local"
+
+
 BUCKET_NAME = "polclassifier-jonahramchandani"
-
-
-##################  CONSTANTS  #####################
-LOCAL_PATH = os.path.join(
-    os.path.expanduser('~'), "code", PROJECT_LEAD, PROJECT_NAME)
