@@ -18,5 +18,3 @@ COPY training_outputs training_outputs
 RUN pip install .
 
 CMD uvicorn polclassifier.api.fast:app --host 0.0.0.0 --port $PORT
-
-# Check with ildi about setup.py dev vs non dev
