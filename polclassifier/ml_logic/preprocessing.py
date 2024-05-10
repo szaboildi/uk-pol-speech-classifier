@@ -175,7 +175,7 @@ def embed_and_pad(X, embedding, stop_words=stop_words):
     maxlen = max([len(x) for x in X_embed])
     X_pad = pad_sequences(X_embed, dtype='float32', padding='post', maxlen=maxlen)
 
-    retrurn X_pad
+    return X_pad
 
 
 # Function to convert a sentence (list of words) into a matrix representing the words in the embedding space
