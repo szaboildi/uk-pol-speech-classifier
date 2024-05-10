@@ -13,8 +13,7 @@ import string
 from nltk import word_tokenize
 from nltk.stem import WordNetLemmatizer
 
-# from sklearn.pipeline import make_pipeline
-# from sklearn.preprocessing import OneHotEncoder
+from sklearn.preprocessing import OneHotEncoder
 from sklearn.feature_extraction.text import TfidfVectorizer
 
 
@@ -133,6 +132,16 @@ def preprocess_all(df, min_word_count=400, sample_size=1000, parties_to_exclude=
         X = tf_idf_vectorizer.fit_transform(X).toarray()
 
         print("✅ X vectorized (TfIDf) \n")
+        
+    elif vect_method=="embed":
+        codes = pd.DataFrame(list(enumerate(y["party"].unique())))
+        codes.rename(columns={0:"party_id", 1: "party_name"}, inplace=True)
+        codes.to_csv(os.path.join(
+            local_path, "processed_data",
+            f"targetcodes_{sample_size}sample_{min_word_count}min_{max_word_count}cutoff_{vect_method}.csv"), 
+                     index=False)
+
+        y = OneHotEncoder(sparse_output=False).fit_transform(y["party"].values.reshape(-1, 1))
 
     return X, y
 
