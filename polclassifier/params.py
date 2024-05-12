@@ -32,6 +32,8 @@ KERNEL_DEFAULT = "linear"
 GAMMA_DEFAULT = "scale"
 C_DEFAULT = 4.2
 
+# Parameters for embedding
+EMBEDDING = "glove-wiki-gigaword-100"
 
 ##################  CONSTANTS  #####################
 LOCAL_PATH = os.path.join(
