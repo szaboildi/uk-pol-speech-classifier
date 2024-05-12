@@ -19,6 +19,8 @@ from tensorflow.keras.preprocessing.sequence import pad_sequences
 import gensim.downloader as api
 from nltk.corpus import stopwords
 
+from polclassifier.ml_logic.registry import *
+
 
 def clean_data(df, min_word_count=400, sample_size=1000, parties_to_exclude=[]):
     """
@@ -131,9 +133,11 @@ def preprocess_all(df, min_word_count=400, sample_size=1000, parties_to_exclude=
             stop_words="english")
 
         X = tf_idf_vectorizer.fit_transform(X).toarray()
-
         print("✅ X vectorized (TfIDf) \n")
         
+        # Save vectorizer for transformation of X_pred
+        save_vectorizer(tf_idf_vectorizer, min_df=min_df, max_df=max_df, max_features=max_features)
+
     elif vect_method=="for_embed":
         codes = pd.DataFrame(list(enumerate(y.unique())))
         codes.rename(columns={0:"party_id", 1: "party_name"}, inplace=True)
@@ -163,15 +167,17 @@ def save_processed_to_cache(
     return
 
 
-def embed_and_pad(X, embedding, stop_words=stop_words):
+def embed_and_pad(X, embedding, stop_words):
     X_embed = embed_sentences(X, embedding, stop_words)
     
     maxlen = max([len(x) for x in X_embed])
     X_pad = pad_sequences(X_embed, dtype='float32', padding='post', maxlen=maxlen)
+    
+    return X_pad
 
 
 # Function to convert a sentence (list of words) into a matrix representing the words in the embedding space
-def embed_sentence_with_TF(sentence, embedding, stop_words=stop_words):
+def embed_sentence_with_TF(sentence, embedding, stop_words):
     embedded_sentence = []
     for word in sentence:
         if word in embedding and word not in stop_words:
@@ -180,11 +186,11 @@ def embed_sentence_with_TF(sentence, embedding, stop_words=stop_words):
     return np.array(embedded_sentence)
 
 # Function that converts a list of sentences into a list of matrices
-def embed_sentences(embedding, sentences):
+def embed_sentences(embedding, sentences, stop_words):
     embed = []
     
     for sentence in sentences:
-        embedded_sentence = embed_sentence_with_TF(embedding, sentence.split())
+        embedded_sentence = embed_sentence_with_TF(embedding, sentence.split(), stop_words)
         embed.append(embedded_sentence)
         
     return embed
