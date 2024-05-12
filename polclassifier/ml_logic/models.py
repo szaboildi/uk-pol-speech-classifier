@@ -1,24 +1,22 @@
 import pandas as pd
 import numpy as np
-from sklearn.model_selection import train_test_split
-from sklearn.linear_model import LogisticRegression
+
+from sklearn.linear_model import LogisticRegression, SGDClassifier
 from sklearn.neighbors import KNeighborsClassifier
-from sklearn.linear_model import SGDClassifier
-from sklearn.metrics import accuracy_score
-from sklearn.metrics import classification_report
-from sklearn.model_selection import cross_val_score
-from sklearn.model_selection import RandomizedSearchCV
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import accuracy_score, classification_report, accuracy_score
+from sklearn.model_selection import cross_val_score, RandomizedSearchCV, train_test_split
 from sklearn.svm import SVC
 
 from polclassifier.params import *
+
 
 def save_model(X, y, model, model_name):
     # Function for saving the models
     model.fit(X, y)
     joblib.dump(model, f'../models/{model_name}.pkl')
 
-#HL Part
+    
+####### SVM #######
 def randomized_search_model_svm(X, y):
     # Define the hyperparameter grid
     param_grid = {
@@ -62,3 +60,4 @@ def evaluate_model_svm(model, X, y):
     predictions = model.predict(X)
     accuracy = accuracy_score(y, predictions)
     return accuracy
+
