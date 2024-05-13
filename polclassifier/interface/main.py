@@ -44,7 +44,7 @@ def preprocess(reprocess_by_default=False):
             parties_to_exclude=PARTIES_TO_EXCLUDE,
             max_word_count=MAX_WORD_COUNT, extract_from=EXTRACT_FROM,
             min_df=MIN_DF, max_df=MAX_DF, max_features=MAX_FEATURES,
-            vect_method=VECT_METHOD)
+            vect_method=VECT_METHOD, local_path=LOCAL_PATH)
 
         print("✅ X and y preprocessed \n")
 
@@ -139,10 +139,8 @@ def pred_sklearn(speech: str = None) -> np.ndarray:
     return y_pred
 
 
-def pred_keras(X_pred: pd.DataFrame = None) -> np.ndarray:
-
+def pred_keras(speech: str = None) -> np.ndarray:
     """ Let's make a prediction using the latest DL model """
-
     # Create X_pred dataframe consisting of speech text and word count
     word_n_full = len(speech.strip().split())
 
@@ -156,7 +154,7 @@ def pred_keras(X_pred: pd.DataFrame = None) -> np.ndarray:
     # Preprocess the input data
     X_processed = preprocess_text_col(X_pred)
 
-    if vect_method=="tfidf":
+    if VECT_METHOD=="tfidf":
 
     # Vectorizing
         tf_idf_vectorizer = TfidfVectorizer(
