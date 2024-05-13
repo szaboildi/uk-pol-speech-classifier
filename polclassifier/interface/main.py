@@ -128,7 +128,7 @@ def pred_sklearn(speech: str = None) -> np.ndarray:
 
     print("... and vectorizing! ✅ \n")
 
-    
+
     # Load model functionality specific to ML models
     model = load_model_sklearn()
     assert model is not None
@@ -140,10 +140,8 @@ def pred_sklearn(speech: str = None) -> np.ndarray:
     return y_pred
 
 
-def pred_keras(X_pred: pd.DataFrame = None) -> np.ndarray:
-
+def pred_keras(speech: str = None) -> np.ndarray:
     """ Let's make a prediction using the latest DL model """
-
     # Create X_pred dataframe consisting of speech text and word count
     word_n_full = len(speech.strip().split())
 
@@ -157,7 +155,7 @@ def pred_keras(X_pred: pd.DataFrame = None) -> np.ndarray:
     # Preprocess the input data
     X_processed = preprocess_text_col(X_pred)
 
-    if vect_method=="tfidf":
+    if VECT_METHOD=="tfidf":
 
     # Vectorizing
         tf_idf_vectorizer = TfidfVectorizer(
