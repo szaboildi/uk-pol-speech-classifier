@@ -1,10 +1,6 @@
 import os
 from scipy.stats import uniform, randint
 
-########### Constants ###############
-LOCAL_PATH = os.path.join(
-    os.path.expanduser('~'), "code", PROJECT_LEAD, PROJECT_NAME)
-LOCAL_REGISTRY_PATH =  os.path.join(LOCAL_PATH, "training_outputs")
 
 ##################  VARIABLES  ##################
 # Github
