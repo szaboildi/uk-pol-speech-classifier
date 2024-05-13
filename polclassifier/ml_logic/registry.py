@@ -65,7 +65,7 @@ def load_model_keras() -> keras.Model:
         print(Fore.BLUE + f"\nLoad latest model from local registry..." + Style.RESET_ALL)
 
         # Get the latest model version name by the timestamp on disk
-        local_model_directory = os.path.join(LOCAL_REGISTRY_PATH, "models")
+        local_model_directory = os.path.join("training_outputs", "models")
         local_model_paths = glob.glob(f"{local_model_directory}/*")
 
         if not local_model_paths:
@@ -115,7 +115,7 @@ def load_model_sklearn():
         print(Fore.BLUE + f"\nLoad latest model from local registry..." + Style.RESET_ALL)
 
         # Get the latest model version name by the timestamp on disk
-        local_model_directory = os.path.join(LOCAL_REGISTRY_PATH, "models")
+        local_model_directory = os.path.join("training_outputs", "models")
         local_model_paths = glob.glob(f"{local_model_directory}/*")
 
 
@@ -126,7 +126,7 @@ def load_model_sklearn():
 
         print(Fore.BLUE + f"\nLoad latest model from disk..." + Style.RESET_ALL)
 
-        latest_path = os.path.join(LOCAL_REGISTRY_PATH, "models", most_recent_model_path_on_disk)
+        latest_path = os.path.join(most_recent_model_path_on_disk)
         latest_model = joblib.load(latest_path)
 
         print("✅ Model loaded from local disk")
@@ -159,5 +159,70 @@ def load_model_sklearn():
 
     print("\n❌ Model target not recognised")
 
+    return None
 
+
+def save_vectorizer(vectorizer=None, min_df=5, max_df=0.85, max_features=10000) -> None:
+
+    # If the output folder is missing, make it first
+    if not os.path.isdir(os.path.join(LOCAL_REGISTRY_PATH, "vectorizers")):
+        os.mkdir(os.path.join(LOCAL_REGISTRY_PATH, "vectorizers"))
+
+    # Save vectorizer locally
+    vect_path = os.path.join(LOCAL_REGISTRY_PATH, "vectorizers", f"{min_df}-{max_df}-{max_features}.pkl")
+    joblib.dump(vectorizer, vect_path)
+
+    print("✅ Vectorizer saved locally")
+
+    if MODEL_TARGET == "gcs":
+
+        vect_filename = vect_path.split("/")[-1] # e.g. "20230208-161047.h5" for instance
+        client = storage.Client()
+        bucket = client.bucket(BUCKET_NAME)
+        blob = bucket.blob(f"vectorizers/{vect_filename}")
+        blob.upload_from_filename(vect_path)
+
+        print("✅ Model saved to GCS")
+
+        return None
+
+    return None
+
+
+def load_vectorizer(min_df=5, max_df=0.85, max_features=10000):
+
+    if MODEL_TARGET == "local":
+        print(Fore.BLUE + f"\nLoad vectorizer with params {min_df}, {max_df}, {max_features}" + Style.RESET_ALL)
+
+        vect_path = os.path.join("training_outputs", "vectorizers", f"{min_df}-{max_df}-{max_features}.pkl")
+        vectorizer = joblib.load(vect_path)
+
+        print("✅ Model loaded from local disk")
+
+        return vectorizer
+
+    elif MODEL_TARGET == "gcs":
+
+        print(Fore.BLUE + f"\nLoad vectorizer with params {min_df}, {max_df}, {max_features} from GCS..." + Style.RESET_ALL)
+
+        client = storage.Client()
+        blobs = list(client.get_bucket(BUCKET_NAME).list_blobs(prefix="vectorizers"))
+
+        try:
+            vect_name = f"{min_df}-{max_df}-{max_features}.pkl"
+            vect_blob = next((blob for blob in blobs if blob.name == vect_name), None)
+            vect_path_to_save = os.path.join(LOCAL_REGISTRY_PATH, vect_blob.name)
+            vect_blob.download_to_filename(vect_path_to_save)
+
+            vectorizer = joblib.load(vect_path_to_save)
+
+            print("✅ Vectorizer downloaded from cloud storage")
+
+            return vectorizer
+
+        except:
+
+            print(f"\n❌ No model found in GCS bucket {BUCKET_NAME}")
+
+    print("\n❌ Model target not recognised")
     return None
