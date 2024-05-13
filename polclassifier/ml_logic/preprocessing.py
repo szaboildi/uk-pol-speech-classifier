@@ -22,7 +22,6 @@ from nltk.corpus import stopwords
 from polclassifier.ml_logic.registry import *
 
 
-
 def clean_data(df, min_word_count=400, sample_size=1000, parties_to_exclude=[]):
     """
     Cleans the data: only parties with enough data, standardized text length, split
@@ -135,8 +134,7 @@ def preprocess_all(df, min_word_count=400, sample_size=1000, parties_to_exclude=
 
         X = tf_idf_vectorizer.fit_transform(X).toarray()
         print("✅ X vectorized (TfIDf) \n")
-
-
+        
         # Save vectorizer for transformation of X_pred
         save_vectorizer(tf_idf_vectorizer, min_df=min_df, max_df=max_df, max_features=max_features)
 
@@ -174,7 +172,7 @@ def embed_and_pad(X, embedding, stop_words):
 
     maxlen = max([len(x) for x in X_embed])
     X_pad = pad_sequences(X_embed, dtype='float32', padding='post', maxlen=maxlen)
-
+    
     return X_pad
 
 
@@ -194,5 +192,5 @@ def embed_sentences(embedding, sentences, stop_words):
     for sentence in sentences:
         embedded_sentence = embed_sentence_with_TF(embedding, sentence.split(), stop_words)
         embed.append(embedded_sentence)
-
+    
     return embed

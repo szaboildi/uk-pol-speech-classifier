@@ -1,25 +1,22 @@
 import pandas as pd
 import numpy as np
 
-
 from sklearn.linear_model import LogisticRegression, SGDClassifier
 from sklearn.neighbors import KNeighborsClassifier
-
 from sklearn.metrics import accuracy_score, classification_report
 from sklearn.model_selection import train_test_split, cross_val_score, RandomizedSearchCV
-
 from sklearn.svm import SVC
+
+from tensorflow.keras import Model, Sequential, layers, regularizers, optimizers
+from tensorflow.keras.callbacks import EarlyStopping
 
 from colorama import Fore, Style
 import joblib
 
 from polclassifier.params import *
 
-from tensorflow import keras
-from keras import Model, Sequential, layers, regularizers, optimizers
-from keras.callbacks import EarlyStopping
-
-
+   
+####### SVM #######
 def randomized_search_model_svm(X, y):
     print("Grid searching SVM model\n")
     # Define the hyperparameter grid
@@ -69,9 +66,7 @@ def evaluate_model_svm(model, X, y):
     accuracy = accuracy_score(y, predictions)
     return accuracy
 
-
-
-  def randomized_search_model_knn(X, y):
+def randomized_search_model_knn(X, y):
     # Define the hyperparameter grid
     param_grid = {
     'n_neighbors':  N_NEIGHBORS,  # Penalty parameter C (regularization parameter)
@@ -113,14 +108,3 @@ def evaluate_model_knn(model, X, y):
     predictions = model.predict(X)
     accuracy = accuracy_score(y, predictions)
     return accuracy
-
-if __name__ == '__main__':
-    features_path= os.path.join(os.path.dirname(__file__), "../../raw_data/features_1000sample_400min_600cutoff.csv")
-    features_df = pd.read_csv(features_path)
-    target_path= os.path.join(os.path.dirname(__file__), "../../raw_data/target_1000sample_400min_600cutoff.csv")
-    target_df = pd.read_csv(target_path)
-    features_df.drop(columns = ['Unnamed: 0'], inplace = True)
-    target_df.drop(columns = ['Unnamed: 0'], inplace = True)
-    train_model_knn(features_df, target_df)
-
-
