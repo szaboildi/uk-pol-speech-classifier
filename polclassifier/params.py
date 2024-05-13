@@ -45,5 +45,19 @@ KERNEL_DEFAULT = "linear"
 GAMMA_DEFAULT = "scale"
 C_DEFAULT = 4.2
 
+# Randomized search parameters for model KNN
+N_NEIGHBORS= list(range(3, 50))
+LEAF_SIZE = list(range(1, 10))
+
+# Parameters for default model KNN
+N_NEIGHBORS_DEFAULT = 49
+LEAF_SIZE_DEFAULT = 4
+WEIGHTS_DEFAULT = 'distance'
+
+MODEL_TARGET = "local"
+
+BUCKET_NAME = "polclassifier-jonahramchandani"
+
+
 # Parameters for embedding
 EMBEDDING = "glove-wiki-gigaword-100" # code of embedding from gensim
