@@ -12,22 +12,17 @@ from google.cloud import storage
 from polclassifier.params import *
 
 
-def save_model_sklearn(model = None) -> None:
+def save_model_keras(model: keras.Model = None) -> None:
 
     timestamp = time.strftime("%Y%m%d-%H%M%S")
 
-    # If the output folder is missing, make it first
-    if not os.path.isdir(os.path.join(LOCAL_REGISTRY_PATH, "models")):
-        os.mkdir(os.path.join(LOCAL_REGISTRY_PATH, "models"))
-
     # Save model locally
-    model_path = os.path.join(LOCAL_REGISTRY_PATH, "models", f"{timestamp}.pkl")
-    joblib.dump(model, model_path)
+    model_path = os.path.join(LOCAL_REGISTRY_PATH, "models", f"{timestamp}.h5")
+    model.save(model_path)
 
     print("✅ Model saved locally")
 
     if MODEL_TARGET == "gcs":
-
         model_filename = model_path.split("/")[-1] # e.g. "20230208-161047.h5" for instance
         client = storage.Client()
         bucket = client.bucket(BUCKET_NAME)
@@ -40,24 +35,17 @@ def save_model_sklearn(model = None) -> None:
 
     return None
 
-
-def save_model_keras(model: keras.Model = None) -> None:
+def save_model_sklearn(model = None) -> None:
 
     timestamp = time.strftime("%Y%m%d-%H%M%S")
 
-
-    # If the output folder is missing, make it first
-    if not os.path.isdir(os.path.join(LOCAL_REGISTRY_PATH, "models")):
-        os.mkdir(os.path.join(LOCAL_REGISTRY_PATH, "models"))
-
     # Save model locally
-    model_path = os.path.join(LOCAL_REGISTRY_PATH, "models", f"{timestamp}.h5")
-    model.save(model_path)
+    model_path = os.path.join(LOCAL_REGISTRY_PATH, "models", f"{timestamp}.pkl")
+    joblib.dump(model, model_path)
 
     print("✅ Model saved locally")
 
     if MODEL_TARGET == "gcs":
-
         model_filename = model_path.split("/")[-1] # e.g. "20230208-161047.h5" for instance
         client = storage.Client()
         bucket = client.bucket(BUCKET_NAME)
@@ -121,8 +109,6 @@ def load_model_keras() -> keras.Model:
 
     return None
 
-
-
 def load_model_sklearn():
 
     if MODEL_TARGET == "local":
@@ -172,7 +158,6 @@ def load_model_sklearn():
             return None
 
     print("\n❌ Model target not recognised")
-
 
     return None
 
