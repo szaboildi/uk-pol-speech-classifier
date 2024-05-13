@@ -143,7 +143,7 @@ def preprocess_all(df, min_word_count=400, sample_size=1000, parties_to_exclude=
         codes.rename(columns={0:"party_id", 1: "party_name"}, inplace=True)
         codes.to_csv(os.path.join(
             local_path, "processed_data",
-            f"targetcodes_{sample_size}sample_{min_word_count}min_{max_word_count}cutoff_{vect_method}.csv"), 
+            f"targetcodes_{sample_size}sample_{min_word_count}min_{max_word_count}cutoff_{vect_method}.csv"),
                      index=False)
 
         y = pd.DataFrame(OneHotEncoder(sparse_output=False).fit_transform(y.values.reshape(-1, 1)))
@@ -169,7 +169,7 @@ def save_processed_to_cache(
 
 def embed_and_pad(X, embedding, stop_words):
     X_embed = embed_sentences(X, embedding, stop_words)
-    
+
     maxlen = max([len(x) for x in X_embed])
     X_pad = pad_sequences(X_embed, dtype='float32', padding='post', maxlen=maxlen)
     
@@ -182,15 +182,15 @@ def embed_sentence_with_TF(sentence, embedding, stop_words):
     for word in sentence:
         if word in embedding and word not in stop_words:
             embedded_sentence.append(embedding[word])
-        
+
     return np.array(embedded_sentence)
 
 # Function that converts a list of sentences into a list of matrices
 def embed_sentences(embedding, sentences, stop_words):
     embed = []
-    
+
     for sentence in sentences:
         embedded_sentence = embed_sentence_with_TF(embedding, sentence.split(), stop_words)
         embed.append(embedded_sentence)
-        
+    
     return embed
