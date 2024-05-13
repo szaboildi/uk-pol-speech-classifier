@@ -122,8 +122,8 @@ if __name__ == '__main__':
     target_df.drop(columns = ['Unnamed: 0'], inplace = True)
     train_model_knn(features_df, target_df)
 
-    
-    
+
+
 def initialize_model_lstm():
     """Initialize Recurrent Neural Network with LSTM
     """
