@@ -83,7 +83,7 @@ def train_evaluate_model_svm(split_ratio: float = 0.2, perform_search: bool = Fa
         best_params = None
 
     # Train model using `models.py`
-    model = train_model_svm(X_train, y_train, best_params=best_params)
+    model = train_model_svm(X_train, y_train, probability=True, best_params=best_params)
 
     print("✅ Model trained \n")
 
