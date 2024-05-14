@@ -4,7 +4,7 @@ import numpy as np
 from sklearn.linear_model import LogisticRegression, SGDClassifier
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import accuracy_score, classification_report
-from sklearn.model_selection import train_test_split, cross_val_score, RandomizedSearchCV
+from sklearn.model_selection import train_test_split, cross_val_score, RandomizedSearchCV, GridSearchCV
 from sklearn.svm import SVC
 
 from tensorflow.keras import Model, Sequential, layers, regularizers, optimizers
@@ -24,15 +24,15 @@ def randomized_search_model_svm(X, y):
     'C': PENALTY_C,  # Penalty parameter C (regularization parameter)
     'kernel': KERNEL,  # Kernel type
     'gamma': GAMMA,  # Kernel coefficient for 'rbf', 'poly' and 'sigmoid'
-    'degree': DEGREE  # Degree of the polynomial kernel function ('poly')
+    # 'degree': DEGREE  # Degree of the polynomial kernel function ('poly')
     }
 
     # Create an SVM classifier
     svm_classifier = SVC()
 
     # Perform random search cross-validation
-    random_search = RandomizedSearchCV(
-        svm_classifier, param_distributions=param_grid, n_iter=25,
+    random_search = GridSearchCV(
+        svm_classifier, param_grid=param_grid, verbose=2,
         scoring='accuracy', cv=5, n_jobs=-1)
     random_search.fit(X, y)
 

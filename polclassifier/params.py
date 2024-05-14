@@ -22,11 +22,11 @@ LOCAL_REGISTRY_PATH =  os.path.join(LOCAL_PATH, "training_outputs")
 # Preprocessing variables
 REPROCESS_BY_DEFAULT = True # Should raw data be reprocessed even if it's already cached
 
-MIN_YEAR = 2010 # inclusive
+MIN_YEAR = 0 # inclusive
 MAX_YEAR = 3000 # inclusive
 MIN_WORD_COUNT = 400
-SAMPLE_SIZE = 1700
-PARTIES_TO_EXCLUDE = [] # list of strings with party names to exclude
+SAMPLE_SIZE = 3000
+PARTIES_TO_EXCLUDE = ["SNP", "UUP", "PlaidCymru", "DUP"] # list of strings with party names to exclude
 MAX_WORD_COUNT = 600
 EXTRACT_FROM = "middle" # Possible values: "start", "middle", "end"
 VECT_METHOD = "tfidf" # Possible values: "tfidf", "for_embed"
@@ -37,10 +37,10 @@ MAX_DF = 0.85
 MAX_FEATURES = 10000
 
 # Randomized search parameters for model SVM
-PENALTY_C = uniform(0.1, 10)
-KERNEL = ['poly'] #['linear', 'poly', 'rbf', 'sigmoid']
+PENALTY_C = [0.5, 1, 2, 3, 4, 5, 7]#uniform(0.1, 10)
+KERNEL = ['rbf'] #['linear', 'poly', 'rbf', 'sigmoid']
 GAMMA = ['scale', 'auto']
-DEGREE = randint(1, 10)
+# DEGREE = randint(1, 10)
 
 # Parameters for default model SVM
 KERNEL_DEFAULT = "linear"
