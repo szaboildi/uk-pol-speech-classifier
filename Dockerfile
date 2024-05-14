@@ -9,6 +9,7 @@ WORKDIR /prod
 
 # First, pip install dependencies
 COPY requirements.txt requirements.txt
+COPY processed_data/smaller_data_test.csv smaller_data_test.csv
 RUN pip install -r requirements.txt
 
 # Then only, install taxifare!

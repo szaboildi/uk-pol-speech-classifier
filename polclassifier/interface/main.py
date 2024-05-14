@@ -204,6 +204,7 @@ def train_evaluate_model_knn(split_ratio: float = 0.2, perform_search: bool = Fa
     return model, accuracy
 
 def load_speeches(min_word_count=400, sample_size=1000, parties_to_exclude=[], speeches_per_party = 20):
+    print("function")
     # Load data from feather file
     raw_data_path = os.path.join(
             LOCAL_PATH, "raw_data", "Corp_HouseOfCommons_V2.feather")
@@ -211,8 +212,6 @@ def load_speeches(min_word_count=400, sample_size=1000, parties_to_exclude=[], s
 
     # Filter and clean data
     data = clean_data(df=data, min_word_count=min_word_count, sample_size=sample_size, parties_to_exclude=parties_to_exclude)
-    print(data)
-
 
     # Split the data into training and testing sets
     data_train, data_test = train_test_split(data, test_size=0.2, random_state=42, stratify=data["party"])
@@ -226,7 +225,11 @@ def load_speeches(min_word_count=400, sample_size=1000, parties_to_exclude=[], s
         # Add selected speeches to list
         smaller_data_test.append(sampled_group)
 
-    return smaller_data_test
+    df = pd.concat(smaller_data_test)
+    path = os.path.join(LOCAL_PATH, "processed_data", "smaller_data_test.csv")
+    df.to_csv(path, index=False)
+
+    return
 
 if __name__ == '__main__':
     #train_evaluate_model_knn()
