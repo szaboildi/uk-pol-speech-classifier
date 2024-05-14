@@ -27,7 +27,7 @@ SAMPLE_SIZE = 1000
 PARTIES_TO_EXCLUDE = [] # list of strings with party names to exclude
 MAX_WORD_COUNT = 600
 EXTRACT_FROM = "middle" # Possible values: "start", "middle", "end"
-VECT_METHOD = "for_embed" # Possible values: "tfidf", "for_embed"
+VECT_METHOD = "tfidf" # Possible values: "tfidf", "for_embed"
 
 # Tfidf vectorizer params
 MIN_DF = 5
@@ -43,7 +43,7 @@ DEGREE = randint(1, 10)
 # Parameters for default model SVM
 KERNEL_DEFAULT = "linear"
 GAMMA_DEFAULT = "scale"
-C_DEFAULT = 4.2
+C_DEFAULT = 1.32
 
 # Randomized search parameters for model KNN
 N_NEIGHBORS= list(range(3, 50))

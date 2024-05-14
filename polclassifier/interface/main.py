@@ -66,12 +66,12 @@ def train_evaluate_model_svm(split_ratio: float = 0.2, perform_search: bool = Fa
 
     # Extract series from y if saved as a DataFrame
     if len(y.shape) > 1:
-        y = y['party']
+        y = y["party"]
 
     print(f"y shape: {y.shape}")
 
     # Split the data into training and testing sets
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=split_ratio, random_state=42)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=split_ratio, random_state=42, stratify=y)
 
     print("Data split in to test and train")
 
@@ -203,7 +203,32 @@ def train_evaluate_model_knn(split_ratio: float = 0.2, perform_search: bool = Fa
 
     return model, accuracy
 
+def load_speeches(min_word_count=400, sample_size=1000, parties_to_exclude=[], speeches_per_party = 20):
+    # Load data from feather file
+    raw_data_path = os.path.join(
+            LOCAL_PATH, "raw_data", "Corp_HouseOfCommons_V2.feather")
+    data = pd.read_feather(raw_data_path)
+
+    # Filter and clean data
+    data = clean_data(df=data, min_word_count=min_word_count, sample_size=sample_size, parties_to_exclude=parties_to_exclude)
+    print(data)
+
+
+    # Split the data into training and testing sets
+    data_train, data_test = train_test_split(data, test_size=0.2, random_state=42, stratify=data["party"])
+
+    # Undersample data_test
+    grouped_data = data_test.groupby('party')
+    smaller_data_test = []
+    for party, group in grouped_data:
+        # Select randomly 20 speeches per party
+        sampled_group = group.sample(n=speeches_per_party, random_state=42)
+        # Add selected speeches to list
+        smaller_data_test.append(sampled_group)
+
+    return smaller_data_test
 
 if __name__ == '__main__':
-    train_evaluate_model_knn()
+    #train_evaluate_model_knn()
     #train_evaluate_model_svm()
+    load_speeches()

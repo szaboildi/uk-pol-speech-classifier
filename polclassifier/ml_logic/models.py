@@ -71,7 +71,7 @@ def evaluate_model_svm(model, X, y):
 
 
 
-  def randomized_search_model_knn(X, y):
+def randomized_search_model_knn(X, y):
     # Define the hyperparameter grid
     param_grid = {
     'n_neighbors':  N_NEIGHBORS,  # Penalty parameter C (regularization parameter)
@@ -122,5 +122,3 @@ if __name__ == '__main__':
     features_df.drop(columns = ['Unnamed: 0'], inplace = True)
     target_df.drop(columns = ['Unnamed: 0'], inplace = True)
     train_model_knn(features_df, target_df)
-
-
