@@ -22,12 +22,14 @@ LOCAL_REGISTRY_PATH =  os.path.join(LOCAL_PATH, "training_outputs")
 # Preprocessing variables
 REPROCESS_BY_DEFAULT = True # Should raw data be reprocessed even if it's already cached
 
+MIN_YEAR = 2010 # inclusive
+MAX_YEAR = 3000 # inclusive
 MIN_WORD_COUNT = 400
-SAMPLE_SIZE = 1000
+SAMPLE_SIZE = 1700
 PARTIES_TO_EXCLUDE = [] # list of strings with party names to exclude
 MAX_WORD_COUNT = 600
 EXTRACT_FROM = "middle" # Possible values: "start", "middle", "end"
-VECT_METHOD = "for_embed" # Possible values: "tfidf", "for_embed"
+VECT_METHOD = "tfidf" # Possible values: "tfidf", "for_embed"
 
 # Tfidf vectorizer params
 MIN_DF = 5
@@ -36,7 +38,7 @@ MAX_FEATURES = 10000
 
 # Randomized search parameters for model SVM
 PENALTY_C = uniform(0.1, 10)
-KERNEL = ['linear', 'poly', 'rbf', 'sigmoid']
+KERNEL = ['poly'] #['linear', 'poly', 'rbf', 'sigmoid']
 GAMMA = ['scale', 'auto']
 DEGREE = randint(1, 10)
 

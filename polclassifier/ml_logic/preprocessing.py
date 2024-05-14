@@ -22,15 +22,21 @@ from nltk.corpus import stopwords
 from polclassifier.ml_logic.registry import *
 
 
-def clean_data(df, min_word_count=400, sample_size=1000, parties_to_exclude=[]):
+def clean_data(df, min_word_count=400, sample_size=1000, parties_to_exclude=[],
+               min_year=0, max_year=3000):
     """
     Cleans the data: only parties with enough data, standardized text length, split
     into features (pd.Series of texts) and target (pd.Series)
     df: dataframe to preprocess
     min_word_count: minimum length for a speech to be included in the sampling
     sample_size: number of samples to draw per party
+    min_year: earliest year to include speeches from (inclusive)
+    max_year: latest year to include speeches from (inclusive)
     """
-    df = df[["speaker", "party", "text"]]
+    df["year"] = pd.DatetimeIndex(df.date).year
+    df = df[["speaker", "party", "text", "year"]]
+    
+    df = df[(df["year"] >= min_year) & (df["year"] <= max_year)]
 
     # Filter for min word count
     df["word_n_full"] = df.apply(lambda row: len(row["text"].strip().split()), axis=1)
@@ -112,10 +118,12 @@ def preprocess_text_col(
 
 def preprocess_all(df, min_word_count=400, sample_size=1000, parties_to_exclude=[],
                    max_word_count=600, extract_from="middle",
-                   min_df=5, max_df=0.85, max_features=10000, vect_method="tfidf", local_path=None):
+                   min_df=5, max_df=0.85, max_features=10000, vect_method="tfidf", local_path=None,
+                   min_year=0, max_year=3000
+                  ):
     """Preprocess all data"""
     df = clean_data(df, min_word_count=min_word_count, sample_size=sample_size,
-                    parties_to_exclude=parties_to_exclude)
+                    parties_to_exclude=parties_to_exclude, min_year=min_year, max_year=max_year)
 
     print("✅ Raw data cleaned \n")
 

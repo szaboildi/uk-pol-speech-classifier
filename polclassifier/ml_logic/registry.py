@@ -115,10 +115,11 @@ def load_model_sklearn():
         print(Fore.BLUE + f"\nLoad latest model from local registry..." + Style.RESET_ALL)
 
         # Get the latest model version name by the timestamp on disk
-        local_model_directory = os.path.join("training_outputs", "models")
+        local_model_directory = os.path.join("..", "training_outputs", "models")
         local_model_paths = glob.glob(f"{local_model_directory}/*")
 
-
+        print(local_model_directory)
+        
         if not local_model_paths:
             return None
 

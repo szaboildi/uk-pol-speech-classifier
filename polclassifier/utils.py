@@ -12,7 +12,7 @@ def plot_confusion_matrix(model, vect_method="tfidf"):
     # Load data
     X, y = preprocess()
     
-    if vect_method=="embed":
+    if vect_method=="for_embed":
         if len(X.shape) > 1:
             X = X["text"]
             
@@ -20,7 +20,7 @@ def plot_confusion_matrix(model, vect_method="tfidf"):
         y = y["party"]
     labels = list(y.unique())
 
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
     
     # Generate predictions
     y_pred = model.predict(X_test)

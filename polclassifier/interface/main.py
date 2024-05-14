@@ -23,9 +23,9 @@ def preprocess(reprocess_by_default=False):
     # Check cache
     # if there, load from there
     if os.path.isfile(X_path) and os.path.isfile(y_path) and not reprocess_by_default:
-        print("✅ X and y loaded in from cache \n")
         X = pd.read_csv(X_path)
         y = pd.read_csv(y_path)
+        print("✅ X and y loaded in from cache \n")
     # if not, do proper preprocessing
     else:
         # If the folder is also missing, make it first
@@ -44,7 +44,8 @@ def preprocess(reprocess_by_default=False):
             parties_to_exclude=PARTIES_TO_EXCLUDE,
             max_word_count=MAX_WORD_COUNT, extract_from=EXTRACT_FROM,
             min_df=MIN_DF, max_df=MAX_DF, max_features=MAX_FEATURES,
-            vect_method=VECT_METHOD, local_path=LOCAL_PATH)
+            vect_method=VECT_METHOD, local_path=LOCAL_PATH,
+            min_year=MIN_YEAR, max_year=MAX_YEAR)
 
         print("✅ X and y preprocessed \n")
 
@@ -68,10 +69,10 @@ def train_evaluate_model_svm(split_ratio: float = 0.2, perform_search: bool = Fa
     if len(y.shape) > 1:
         y = y['party']
 
-    print(f"y shape: {y.shape}")
+    # print(f"y shape: {y.shape}")
 
     # Split the data into training and testing sets
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=split_ratio, random_state=42)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=split_ratio, random_state=42, stratify=y)
 
     print("Data split in to test and train")
 
@@ -184,7 +185,7 @@ def train_evaluate_model_knn(split_ratio: float = 0.2, perform_search: bool = Fa
     X, y = preprocess()
 
     # Split the data into training and testing sets
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=split_ratio, random_state=42)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=split_ratio, random_state=42, stratify=y)
 
     if perform_search:
         # Search for best parameters
@@ -205,5 +206,6 @@ def train_evaluate_model_knn(split_ratio: float = 0.2, perform_search: bool = Fa
 
 
 if __name__ == '__main__':
-    train_evaluate_model_knn()
-    #train_evaluate_model_svm()
+    # X, y = preprocess(reprocess_by_default=REPROCESS_BY_DEFAULT)
+    #train_evaluate_model_knn()
+    train_evaluate_model_svm(perform_search=True)
