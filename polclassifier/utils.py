@@ -1,4 +1,6 @@
 from sklearn.metrics import confusion_matrix
+import os
+import pandas as pd
 import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
@@ -6,6 +8,8 @@ import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 
 from polclassifier.interface.main import preprocess
+from polclassifier.ml_logic.preprocessing import *
+from polclassifier.params import *
 
 
 def plot_confusion_matrix(model, vect_method="tfidf"):
@@ -46,3 +50,39 @@ def plot_confusion_matrix(model, vect_method="tfidf"):
 # labels = list of label names
 
 # plot_confusion_matrix(model, X_test, y_test, labels)
+
+def load_speeches(min_word_count=400, sample_size=1000, parties_to_exclude=[], speeches_per_party = 20):
+    # Load data from feather file
+    raw_data_path = "~/code/uk-pol-speech-classifier/polclassifier/Corp_HouseOfCommons_V2.feather"
+    try:
+        data = pd.read_feather(raw_data_path)
+        print("Data loaded successfully")
+    except Exception as e:
+        print("Error loading data:", e)
+        return None
+
+    # Filter and clean data
+    data = clean_data(df=data, min_word_count=min_word_count, sample_size=sample_size, parties_to_exclude=parties_to_exclude)
+    print(data)
+
+
+    # Split the data into training and testing sets
+    data_train, data_test = train_test_split(data, test_size=0.2, random_state=42, stratify=data["party"])
+
+    # Undersample data_test
+    grouped_data = data_test.groupby('party')
+    smaller_data_test = []
+    for party, group in grouped_data:
+        # Select randomly 20 speeches per party
+        sampled_group = group.sample(n=speeches_per_party, random_state=42)
+        # Add selected speeches to list
+        smaller_data_test.append(sampled_group)
+    
+    df = pd.concat(smaller_data_test, ignore_index=True)
+    path="~/code/uk-pol-speech-classifier/polclassifier/smaller_data_test.csv"
+    df.to_csv(path, index=False)
+
+    return 
+
+if __name__=="__main__":
+    load_speeches()
