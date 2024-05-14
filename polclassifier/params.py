@@ -37,15 +37,15 @@ MAX_DF = 0.85
 MAX_FEATURES = 10000
 
 # Randomized search parameters for model SVM
-PENALTY_C = [0.5, 1, 2, 3, 4, 5, 7]#uniform(0.1, 10)
+PENALTY_C = [3.8, 4, 4.1, 4.2, 4.3, 4.4, 4.5]#uniform(0.1, 10)
 KERNEL = ['rbf'] #['linear', 'poly', 'rbf', 'sigmoid']
-GAMMA = ['scale', 'auto']
+GAMMA = ['scale']
 # DEGREE = randint(1, 10)
 
 # Parameters for default model SVM
-KERNEL_DEFAULT = "linear"
+KERNEL_DEFAULT = "rbf"
 GAMMA_DEFAULT = "scale"
-C_DEFAULT = 4.2
+C_DEFAULT = 3.8
 
 # Randomized search parameters for model KNN
 N_NEIGHBORS= list(range(3, 50))
