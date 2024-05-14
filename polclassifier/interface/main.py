@@ -180,4 +180,4 @@ def pred_keras(X_pred: pd.DataFrame = None) -> np.ndarray:
 
 
 if __name__ == '__main__':
-    train_evaluate_model_svm()
+    preprocess()

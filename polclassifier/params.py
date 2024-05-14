@@ -49,4 +49,4 @@ EMBEDDING = "glove-wiki-gigaword-100" # code of embedding from gensim
 MODEL_TARGET = "local"
 
 # Transformer paramaters
-HF_MODEL = "maurice/PolitBERT" # Possible values: prajjwal1/bert-tiny, distilbert/distilbert-base-uncased-finetuned-sst-2-english, maurice/PolitBERT
+HF_MODEL = "prajjwal1/bert-small" # Possible values: prajjwal1/bert-tiny, distilbert/distilbert-base-uncased, prajjwal1/bert-small

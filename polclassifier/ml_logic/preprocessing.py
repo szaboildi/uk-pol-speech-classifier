@@ -75,11 +75,11 @@ def clean_text(text:str):
     # tokens = [w for w in tokens if w not in stop_words]
 
     # lemmatize
-    lemmatizer = WordNetLemmatizer()
-    lemmatized_tokens = [lemmatizer.lemmatize(token) for token in tokens]
+    # lemmatizer = WordNetLemmatizer()
+    # lemmatized_tokens = [lemmatizer.lemmatize(token) for token in tokens]
 
     # join tokens
-    cleaned_text = " ".join(lemmatized_tokens)
+    cleaned_text = " ".join(tokens)
 
     return cleaned_text
 
