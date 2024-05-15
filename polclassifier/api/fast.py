@@ -50,7 +50,7 @@ def get_speech(party: str):
 @app.get("/visualisation")
 def visualise_predict():
 
-    html_file = visualise_predict()
+    html_file = os.path.join(LOCAL_REGISTRY_PATH, "text_plot", "latest_plot.html")
     return FileResponse(html_file)
 
 

@@ -285,3 +285,4 @@ def save_shapley_plot(shap_values):
     file.close()
 
     print("✅ Chapley text plot created and saved to registry")
+    

@@ -100,6 +100,7 @@ def train_evaluate_model_svm(split_ratio: float = 0.2, perform_search: bool = Fa
 
     return accuracy
 
+
 def create_shapley_explainer():
 
     # Load model functionality specific to ML models
@@ -198,36 +199,10 @@ def visualise_pred(speech: str = None):
 
     print("✅ Shapley explainer trained on model...")
 
-    # save_explainer(explainer)
-
-    print("✅ ... and saved to registry!")
-
-    # Load latest explainer from registry
-    # explainer = load_explainer()
-
     # Create shapley values on the input string and save plot to registry
     shap_values = explainer(X_processed)
-    print("✅ Explainer loaded from registry and shapley values calculated")
 
-    # If the output folder is missing, make it first
-    if not os.path.isdir(os.path.join(LOCAL_REGISTRY_PATH, "text_plot")):
-        os.mkdir(os.path.join(LOCAL_REGISTRY_PATH, "text_plot"))
-
-    # Create file path for one plot
-    plot_path = os.path.join(LOCAL_REGISTRY_PATH, "text_plot", "latest_plot.html")
-
-    # If a plot already exists, remove it as we only ever need one at a time
-    if os.path.exists(plot_path):
-        os.remove(plot_path)
-
-    # Write a new file into the path and save the plot inside it
-    file = open(plot_path,'w')
-    file.write(shap.plots.text(shap_values, display=False))
-    file.close()
-
-    print("✅ Chapley text plot created and saved to registry")
-
-    return plot_path
+    save_shapley_plot(shap_values)
 
 
 def pred_keras(speech: str = None) -> np.ndarray:
@@ -328,4 +303,4 @@ if __name__ == '__main__':
     # train_evaluate_model_svm()
     #load_speeches()
     # create_shapley_explainer()
-    visualise_pred("scotland scotland scotland")
+    visualise_pred("i love scotland so much")
