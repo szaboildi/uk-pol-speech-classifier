@@ -44,7 +44,7 @@ def get_speech(party: str):
         return {"error": "No speeches found for the selected party."}
 
     # Select a random speech from the filtered data
-    selected_speech = random.choice(party_data['sample_text'])
+    selected_speech = random.choice(party_data['text'])
     return dict(speech = selected_speech)
 
 
