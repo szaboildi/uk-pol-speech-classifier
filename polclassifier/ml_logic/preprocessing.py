@@ -75,11 +75,11 @@ def clean_text(text:str):
     # tokens = [w for w in tokens if w not in stop_words]
 
     # lemmatize
-    # lemmatizer = WordNetLemmatizer()
-    # lemmatized_tokens = [lemmatizer.lemmatize(token) for token in tokens]
+    lemmatizer = WordNetLemmatizer()
+    lemmatized_tokens = [lemmatizer.lemmatize(token) for token in tokens]
 
     # join tokens
-    cleaned_text = " ".join(tokens)
+    cleaned_text = " ".join(lemmatized_tokens)
 
     return cleaned_text
 
@@ -134,7 +134,7 @@ def preprocess_all(df, min_word_count=400, sample_size=1000, parties_to_exclude=
 
         X = tf_idf_vectorizer.fit_transform(X).toarray()
         print("✅ X vectorized (TfIDf) \n")
-        
+
         # Save vectorizer for transformation of X_pred
         save_vectorizer(tf_idf_vectorizer, min_df=min_df, max_df=max_df, max_features=max_features)
 
@@ -172,7 +172,7 @@ def embed_and_pad(X, embedding, stop_words):
 
     maxlen = max([len(x) for x in X_embed])
     X_pad = pad_sequences(X_embed, dtype='float32', padding='post', maxlen=maxlen)
-    
+
     return X_pad
 
 
@@ -192,5 +192,5 @@ def embed_sentences(embedding, sentences, stop_words):
     for sentence in sentences:
         embedded_sentence = embed_sentence_with_TF(embedding, sentence.split(), stop_words)
         embed.append(embedded_sentence)
-    
+
     return embed
