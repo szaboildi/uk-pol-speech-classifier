@@ -22,7 +22,6 @@ from nltk.corpus import stopwords
 from polclassifier.ml_logic.registry import *
 
 
-
 def clean_data(df, min_word_count=400, sample_size=1000, parties_to_exclude=[]):
     """
     Cleans the data: only parties with enough data, standardized text length, split
@@ -135,7 +134,6 @@ def preprocess_all(df, min_word_count=400, sample_size=1000, parties_to_exclude=
 
         X = tf_idf_vectorizer.fit_transform(X).toarray()
         print("✅ X vectorized (TfIDf) \n")
-
 
         # Save vectorizer for transformation of X_pred
         save_vectorizer(tf_idf_vectorizer, min_df=min_df, max_df=max_df, max_features=max_features)
