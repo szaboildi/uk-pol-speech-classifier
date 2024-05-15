@@ -8,6 +8,8 @@ from polclassifier.ml_logic.models import *
 from polclassifier.ml_logic.registry import *
 from polclassifier.params import *
 
+import shap
+shap.initjs();
 
 def preprocess(reprocess_by_default=False):
 
@@ -94,10 +96,31 @@ def train_evaluate_model_svm(split_ratio: float = 0.2, perform_search: bool = Fa
 
     # Save model weight on the hard drive (and optionally on GCS too!)
     print("Saving model...")
-
     save_model_sklearn(model=model)
 
     return accuracy
+
+def create_shapley_explainer():
+
+    # Load model functionality specific to ML models
+    model = load_model_sklearn()
+    assert model is not None
+
+    tf_idf_vectorizer = load_vectorizer(min_df=MIN_DF, max_df=MAX_DF, max_features=MAX_FEATURES)
+
+    def make_predictions(X_batch_text):
+        X_batch = tf_idf_vectorizer.transform(X_batch_text).toarray()
+        preds = model.predict_proba(X_batch)
+        return preds
+
+    masker = shap.maskers.Text(tokenizer=r"\W+")
+    explainer = shap.Explainer(make_predictions, masker=masker, output_names=["Con", "DUP", "Lab", "LibDem", "PlaidCymru", "SNP", "UUP"])
+
+    print("✅ Shapley explainer trained on model...")
+
+    save_explainer(explainer)
+
+    print("✅ ... and saved to registry!")
 
 
 def pred_sklearn(speech: str = None) -> np.ndarray:
@@ -127,7 +150,6 @@ def pred_sklearn(speech: str = None) -> np.ndarray:
 
     print("... and vectorizing! ✅ \n")
 
-
     # Load model functionality specific to ML models
     model = load_model_sklearn()
     assert model is not None
@@ -140,11 +162,72 @@ def pred_sklearn(speech: str = None) -> np.ndarray:
     if hasattr(model, 'predict_proba'):
         y_prob = model.predict_proba(X_vectorized)
         print(f"✅ Probability estimates: {y_prob}")
+
     else:
         print("❌ Model does not support probability estimates.")
         y_prob = None
 
     return y_pred, np.max(y_prob[0])
+
+def visualise_pred(speech: str = None):
+
+    # Create X_pred dataframe consisting of speech text and word count
+    word_n_full = len(speech.strip().split())
+
+    X_pred = pd.DataFrame(dict(
+        text=[speech],
+        word_n_full=[word_n_full],
+    ))
+
+    # Preprocess the input data
+    X_processed = preprocess_text_col(X_pred)
+
+    # Load model functionality specific to ML models
+    model = load_model_sklearn()
+    assert model is not None
+
+    tf_idf_vectorizer = load_vectorizer(min_df=MIN_DF, max_df=MAX_DF, max_features=MAX_FEATURES)
+
+    def make_predictions(X_batch_text):
+        X_batch = tf_idf_vectorizer.transform(X_batch_text).toarray()
+        preds = model.predict_proba(X_batch)
+        return preds
+
+    masker = shap.maskers.Text(tokenizer=r"\W+")
+    explainer = shap.Explainer(make_predictions, masker=masker, output_names=["Con", "DUP", "Lab", "LibDem", "PlaidCymru", "SNP", "UUP"])
+
+    print("✅ Shapley explainer trained on model...")
+
+    # save_explainer(explainer)
+
+    print("✅ ... and saved to registry!")
+
+    # Load latest explainer from registry
+    # explainer = load_explainer()
+
+    # Create shapley values on the input string and save plot to registry
+    shap_values = explainer(X_processed)
+    print("✅ Explainer loaded from registry and shapley values calculated")
+
+    # If the output folder is missing, make it first
+    if not os.path.isdir(os.path.join(LOCAL_REGISTRY_PATH, "text_plot")):
+        os.mkdir(os.path.join(LOCAL_REGISTRY_PATH, "text_plot"))
+
+    # Create file path for one plot
+    plot_path = os.path.join(LOCAL_REGISTRY_PATH, "text_plot", "latest_plot.html")
+
+    # If a plot already exists, remove it as we only ever need one at a time
+    if os.path.exists(plot_path):
+        os.remove(plot_path)
+
+    # Write a new file into the path and save the plot inside it
+    file = open(plot_path,'w')
+    file.write(shap.plots.text(shap_values, display=False))
+    file.close()
+
+    print("✅ Chapley text plot created and saved to registry")
+
+    return plot_path
 
 
 def pred_keras(speech: str = None) -> np.ndarray:
@@ -211,6 +294,7 @@ def train_evaluate_model_knn(split_ratio: float = 0.2, perform_search: bool = Fa
 
     return model, accuracy
 
+
 def load_speeches(min_word_count=400, sample_size=1000, parties_to_exclude=[], speeches_per_party = 20):
     print("function")
     # Load data from feather file
@@ -241,5 +325,7 @@ def load_speeches(min_word_count=400, sample_size=1000, parties_to_exclude=[], s
 
 if __name__ == '__main__':
     #train_evaluate_model_knn()
-    train_evaluate_model_svm()
+    # train_evaluate_model_svm()
     #load_speeches()
+    # create_shapley_explainer()
+    visualise_pred("scotland scotland scotland")

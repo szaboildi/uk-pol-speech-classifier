@@ -11,6 +11,8 @@ from google.cloud import storage
 
 from polclassifier.params import *
 
+import shap
+shap.initjs();
 
 def save_model_keras(model: keras.Model = None) -> None:
 
@@ -226,3 +228,60 @@ def load_vectorizer(min_df=5, max_df=0.85, max_features=10000):
 
     print("\n❌ Model target not recognised")
     return None
+
+
+def save_explainer(explainer):
+
+    # If the output folder is missing, make it first
+    if not os.path.isdir(os.path.join(LOCAL_REGISTRY_PATH, "explainers")):
+        os.mkdir(os.path.join(LOCAL_REGISTRY_PATH, "explainers"))
+
+    timestamp = time.strftime("%Y%m%d-%H%M%S")
+
+    # Save model locally
+    explainer_path = os.path.join(LOCAL_REGISTRY_PATH, "explainers", f"{timestamp}.pkl")
+    joblib.dump(explainer, explainer_path)
+
+    print("✅ Explainer saved locally")
+
+
+def load_explainer():
+
+    print(Fore.BLUE + f"\nLoad latest explainer from local registry..." + Style.RESET_ALL)
+
+    # Get the latest model version name by the timestamp on disk
+    local_explainer_directory = os.path.join("training_outputs", "explainers")
+    local_explainer_paths = glob.glob(f"{local_explainer_directory}/*")
+
+
+    if not local_explainer_paths:
+        return None
+
+    most_recent_explainer_path_on_disk = sorted(local_explainer_paths)[-1]
+
+    latest_path = os.path.join(most_recent_explainer_path_on_disk)
+    latest_explainer = joblib.load(latest_path)
+
+    print("✅ Explainer loaded from local disk")
+
+    return latest_explainer
+
+def save_shapley_plot(shap_values):
+
+    # If the output folder is missing, make it first
+    if not os.path.isdir(os.path.join(LOCAL_REGISTRY_PATH, "text_plot")):
+        os.mkdir(os.path.join(LOCAL_REGISTRY_PATH, "text_plot"))
+
+    # Create file path for one plot
+    plot_path = os.path.join(LOCAL_REGISTRY_PATH, "text_plot", "latest_plot.html")
+
+    # If a plot already exists, remove it as we only ever need one at a time
+    if os.path.exists(plot_path):
+        os.remove(plot_path)
+
+    # Write a new file into the path and save the plot inside it
+    file = open(plot_path,'w')
+    file.write(shap.plots.text(shap_values, display=False))
+    file.close()
+
+    print("✅ Chapley text plot created and saved to registry")

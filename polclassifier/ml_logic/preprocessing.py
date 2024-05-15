@@ -16,7 +16,7 @@ from sklearn.preprocessing import OneHotEncoder
 
 from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
-import gensim.downloader as api
+# import gensim.downloader as api
 from nltk.corpus import stopwords
 
 from polclassifier.ml_logic.registry import *
