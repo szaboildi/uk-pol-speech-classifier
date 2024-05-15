@@ -3,14 +3,11 @@ gensim
 pandas
 scikit-learn==1.3.1
 nltk
-<<<<<<< HEAD
 gensim>=4.1.0
 pyarrow
 shap
-=======
 torch
 transformers
->>>>>>> faef6de8c12c7a70550732ee28cb0e66bd7c45d8
 
 fastapi
 pytz
