@@ -303,4 +303,4 @@ if __name__ == '__main__':
     # train_evaluate_model_svm()
     #load_speeches()
     # create_shapley_explainer()
-    visualise_pred("i love scotland so much")
+    load_speeches()
