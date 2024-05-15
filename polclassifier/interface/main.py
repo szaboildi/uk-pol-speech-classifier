@@ -136,7 +136,15 @@ def pred_sklearn(speech: str = None) -> np.ndarray:
 
     print(f"✅ And the winner is ... {y_pred}")
 
-    return y_pred
+    # Predict probabilities if the model supports it
+    if hasattr(model, 'predict_proba'):
+        y_prob = model.predict_proba(X_vectorized)
+        print(f"✅ Probability estimates: {y_prob}")
+    else:
+        print("❌ Model does not support probability estimates.")
+        y_prob = None
+
+    return y_pred, np.max(y_prob[0])
 
 
 def pred_keras(speech: str = None) -> np.ndarray:
@@ -233,5 +241,5 @@ def load_speeches(min_word_count=400, sample_size=1000, parties_to_exclude=[], s
 
 if __name__ == '__main__':
     #train_evaluate_model_knn()
-    #train_evaluate_model_svm()
-    load_speeches()
+    train_evaluate_model_svm()
+    #load_speeches()

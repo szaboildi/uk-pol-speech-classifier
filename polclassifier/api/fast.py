@@ -21,9 +21,10 @@ app.add_middleware(
 @app.get("/predict")
 def predict(speech: str) -> dict:
 
-    y_pred = pred_sklearn(speech)[0]
+    y_pred, y_prob = pred_sklearn(speech)
+    y_pred = y_pred.tolist()
 
-    return dict(party = y_pred)
+    return dict(party=y_pred[0], probability=y_prob)
 
 # Load data
 data = pd.read_csv("smaller_data_test.csv")
