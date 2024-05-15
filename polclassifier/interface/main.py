@@ -101,28 +101,6 @@ def train_evaluate_model_svm(split_ratio: float = 0.2, perform_search: bool = Fa
     return accuracy
 
 
-def create_shapley_explainer():
-
-    # Load model functionality specific to ML models
-    model = load_model_sklearn()
-    assert model is not None
-
-    tf_idf_vectorizer = load_vectorizer(min_df=MIN_DF, max_df=MAX_DF, max_features=MAX_FEATURES)
-
-    def make_predictions(X_batch_text):
-        X_batch = tf_idf_vectorizer.transform(X_batch_text).toarray()
-        preds = model.predict_proba(X_batch)
-        return preds
-
-    masker = shap.maskers.Text(tokenizer=r"\W+")
-    explainer = shap.Explainer(make_predictions, masker=masker, output_names=["Con", "DUP", "Lab", "LibDem", "PlaidCymru", "SNP", "UUP"])
-
-    print("✅ Shapley explainer trained on model...")
-
-    save_explainer(explainer)
-
-    print("✅ ... and saved to registry!")
-
 
 def pred_sklearn(speech: str = None) -> np.ndarray:
 
@@ -169,6 +147,8 @@ def pred_sklearn(speech: str = None) -> np.ndarray:
         y_prob = None
 
     return y_pred, np.max(y_prob[0])
+
+
 
 def visualise_pred(speech: str = None):
 
