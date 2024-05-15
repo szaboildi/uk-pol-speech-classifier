@@ -33,7 +33,7 @@ data = pd.read_csv("smaller_data_test.csv")
 def get_speech(party: str):
 
     # Filter data based on party
-    party_data = data[data['party'] == party]
+    party_data = data[data['party'] == party].reset_index(drop=True)
 
     # Check if there are speeches available for the selected party
     if party_data.empty:
