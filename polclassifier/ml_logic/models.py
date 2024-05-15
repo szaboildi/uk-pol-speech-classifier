@@ -1,25 +1,22 @@
 import pandas as pd
 import numpy as np
 
-
 from sklearn.linear_model import LogisticRegression, SGDClassifier
 from sklearn.neighbors import KNeighborsClassifier
-
 from sklearn.metrics import accuracy_score, classification_report
 from sklearn.model_selection import train_test_split, cross_val_score, RandomizedSearchCV
-
 from sklearn.svm import SVC
+
+from tensorflow.keras import Model, Sequential, layers, regularizers, optimizers
+from tensorflow.keras.callbacks import EarlyStopping
 
 from colorama import Fore, Style
 import joblib
 
 from polclassifier.params import *
 
-from tensorflow import keras
-from keras import Model, Sequential, layers, regularizers, optimizers
-from keras.callbacks import EarlyStopping
 
-
+####### SVM #######
 def randomized_search_model_svm(X, y):
     print("Grid searching SVM model\n")
     # Define the hyperparameter grid
