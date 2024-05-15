@@ -4,6 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from polclassifier.interface.main import pred_sklearn
 from polclassifier.params import *
 import random
+from fastapi.responses import FileResponse
 
 
 app = FastAPI()
@@ -26,8 +27,10 @@ def predict(speech: str) -> dict:
 
     return dict(party=y_pred[0], probability=y_prob)
 
-# Load data
-data = pd.read_csv("smaller_data_sample_text.csv")
+# Read in smaller dataset
+data_path = os.path.join(LOCAL_PATH, "processed_data", "smaller_data_test.csv")
+data = pd.read_csv(data_path)
+
 
 # Define endpoint for speech selection
 @app.get('/speech')
@@ -43,6 +46,14 @@ def get_speech(party: str):
     # Select a random speech from the filtered data
     selected_speech = random.choice(party_data['sample_text'])
     return dict(speech = selected_speech)
+
+
+@app.get("/visualisation")
+def visualise_predict():
+
+    html_file = os.path.join(LOCAL_REGISTRY_PATH, "text_plot", "latest_plot.html")
+    return FileResponse(html_file)
+
 
 @app.get("/")
 def root():
