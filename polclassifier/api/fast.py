@@ -27,14 +27,14 @@ def predict(speech: str) -> dict:
 
     return dict(party=y_pred[0], probability=y_prob)
 
+# Read in smaller dataset
+data_path = os.path.join(LOCAL_PATH, "processed_data", "smaller_data_test.csv")
+data = pd.read_csv(data_path)
+
 
 # Define endpoint for speech selection
 @app.get('/speech')
 def get_speech(party: str):
-
-    # Read in smaller dataset
-    data_path = os.path.join(LOCAL_PATH, "processed_data", "smaller_data_test.csv")
-    data = pd.read_csv(data_path)
 
     # Filter data based on party
     party_data = data[data['party'] == party].reset_index(drop=True)
