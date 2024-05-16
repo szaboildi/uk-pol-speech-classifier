@@ -1,7 +1,6 @@
 import os
 from scipy.stats import uniform, randint
 
-
 ##################  PROJECT  ##################
 # Github
 PROJECT_LEAD = "szaboildi"
@@ -15,7 +14,7 @@ BUCKET_NAME = os.environ.get("BUCKET_NAME")
 ###########  CONSTANTS  ###############
 LOCAL_PATH = os.path.join(
     os.path.expanduser('~'), "code", PROJECT_LEAD, PROJECT_NAME)
-LOCAL_REGISTRY_PATH =  os.path.join(LOCAL_PATH, "training_outputs")
+LOCAL_REGISTRY_PATH = os.path.join(LOCAL_PATH, "training_outputs")
 
 
 ##################  VARIABLES  ##################
@@ -44,6 +43,18 @@ DEGREE = randint(1, 10)
 KERNEL_DEFAULT = "linear"
 GAMMA_DEFAULT = "scale"
 C_DEFAULT = 4.2
+
+# Randomized search parameters for model KNN
+N_NEIGHBORS= list(range(3, 50))
+LEAF_SIZE = list(range(1, 10))
+
+# Parameters for default model KNN
+N_NEIGHBORS_DEFAULT = 49
+LEAF_SIZE_DEFAULT = 4
+WEIGHTS_DEFAULT = 'distance'
+
+# Transformer paramaters
+HF_MODEL = "prajjwal1/bert-small" # Possible values: prajjwal1/bert-tiny, distilbert/distilbert-base-uncased, prajjwal1/bert-small
 
 # Parameters for embedding
 EMBEDDING = "glove-wiki-gigaword-100" # code of embedding from gensim

@@ -3,7 +3,6 @@ from colorama import Fore, Style
 import pandas as pd
 
 from sklearn.model_selection import train_test_split
-
 from polclassifier.ml_logic.preprocessing import *
 from polclassifier.ml_logic.models import *
 from polclassifier.ml_logic.registry import *
@@ -177,5 +176,34 @@ def pred_keras(speech: str = None) -> np.ndarray:
     return y_pred
 
 
+def train_evaluate_model_knn(split_ratio: float = 0.2, perform_search: bool = False):
+    print(Fore.MAGENTA + "\n⭐️ Use case: train" + Style.RESET_ALL)
+    print(Fore.BLUE + "\nLoading preprocessed validation data..." + Style.RESET_ALL)
+
+    # Retrieve data
+    X, y = preprocess()
+
+    # Split the data into training and testing sets
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=split_ratio, random_state=42)
+
+    if perform_search:
+        # Search for best parameters
+        best_params = randomized_search_model_knn(X_train, y_train)
+    else:
+        # Use default parameters
+        best_params = {'weights': WEIGHTS_DEFAULT, 'n_neighbors': N_NEIGHBORS_DEFAULT, 'leaf_size': LEAF_SIZE_DEFAULT}
+
+    # Train model using `models.py`
+    model = train_model_knn(X_train, y_train, best_params=best_params)
+
+    # Evaluate model using `models.py
+    accuracy = evaluate_model_knn(model=model, X=X_test, y=y_test)
+
+    save_model_sklearn(model=model)
+
+    return model, accuracy
+
+
 if __name__ == '__main__':
-    train_evaluate_model_svm()
+    train_evaluate_model_knn()
+    #train_evaluate_model_svm()
