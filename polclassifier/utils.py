@@ -1,4 +1,6 @@
 from sklearn.metrics import confusion_matrix
+import os
+import pandas as pd
 import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
@@ -6,22 +8,24 @@ import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 
 from polclassifier.interface.main import preprocess
+from polclassifier.ml_logic.preprocessing import *
+from polclassifier.params import *
 
 
 def plot_confusion_matrix(model, vect_method="tfidf"):
     # Load data
     X, y = preprocess()
-    
+
     if vect_method=="embed":
         if len(X.shape) > 1:
             X = X["text"]
-            
+
     if len(y.shape) > 1:
         y = y["party"]
     labels = list(y.unique())
 
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-    
+
     # Generate predictions
     y_pred = model.predict(X_test)
     print("prediction made")

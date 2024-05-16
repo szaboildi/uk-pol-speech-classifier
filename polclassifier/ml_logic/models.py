@@ -15,7 +15,7 @@ import joblib
 
 from polclassifier.params import *
 
-   
+
 ####### SVM #######
 def randomized_search_model_svm(X, y):
     print("Grid searching SVM model\n")
@@ -47,15 +47,15 @@ def randomized_search_model_svm(X, y):
     # Return the best parameters
     return best_params
 
-def train_model_svm(X, y, best_params=None):
+def train_model_svm(X, y, probability=True, best_params=None):
     if best_params is None:
         # If best_params is not provided, train the model with default parameters
-        model = SVC(kernel=KERNEL_DEFAULT, gamma=GAMMA_DEFAULT, C=C_DEFAULT)
+        model = SVC(kernel=KERNEL_DEFAULT, gamma=GAMMA_DEFAULT, C=C_DEFAULT, probability=probability)
     else:
         # If best_params is provided, extract kernel and penalty_c from it
         kernel_name = best_params['kernel']
         penalty_c = best_params['C']
-        model = SVC(kernel=kernel_name, C=penalty_c)
+        model = SVC(kernel=kernel_name, C=penalty_c, probability=probability)
 
     model.fit(X, y)
     print("✅ Model fit \n")
@@ -65,6 +65,8 @@ def evaluate_model_svm(model, X, y):
     predictions = model.predict(X)
     accuracy = accuracy_score(y, predictions)
     return accuracy
+
+
 
 def randomized_search_model_knn(X, y):
     # Define the hyperparameter grid
@@ -108,3 +110,12 @@ def evaluate_model_knn(model, X, y):
     predictions = model.predict(X)
     accuracy = accuracy_score(y, predictions)
     return accuracy
+
+if __name__ == '__main__':
+    features_path= os.path.join(os.path.dirname(__file__), "../../raw_data/features_1000sample_400min_600cutoff.csv")
+    features_df = pd.read_csv(features_path)
+    target_path= os.path.join(os.path.dirname(__file__), "../../raw_data/target_1000sample_400min_600cutoff.csv")
+    target_df = pd.read_csv(target_path)
+    features_df.drop(columns = ['Unnamed: 0'], inplace = True)
+    target_df.drop(columns = ['Unnamed: 0'], inplace = True)
+    train_model_knn(features_df, target_df)
