@@ -251,7 +251,7 @@ def train_evaluate_model_knn(split_ratio: float = 0.2, perform_search: bool = Fa
 
 
 def load_speeches(min_word_count=400, sample_size=1000, parties_to_exclude=[], speeches_per_party = 20):
-    print("function")
+
     # Load data from feather file
     raw_data_path = os.path.join(
             LOCAL_PATH, "raw_data", "Corp_HouseOfCommons_V2.feather")
@@ -273,10 +273,30 @@ def load_speeches(min_word_count=400, sample_size=1000, parties_to_exclude=[], s
         smaller_data_test.append(sampled_group)
 
     df = pd.concat(smaller_data_test)
+
+    def tokenize_if_needed(text):
+        if isinstance(text, list):
+            return text  # Already tokenized
+        return text.split()  # Tokenize by splitting
+
+    # Apply the tokenization function to ensure all texts are tokenized
+    df['text'] = df['text'].apply(tokenize_if_needed)
+
+    def cut_middle_200(words):
+        if len(words) <= 200:
+            return " ".join(words)  # Return the original text if it's shorter than 200 words
+        else:
+            start_index = (len(words) // 2) - 100  # Calculate the start index of the middle 200 words
+            # Ensure the start index is non-negative
+            start_index = max(start_index, 0)
+            return "..." + " ".join(words[start_index:start_index + 200]) + "..."  # Add "..." around the middle 200 words
+
+    df['sample_text'] = df['text'].apply(cut_middle_200)
+
     path = os.path.join(LOCAL_PATH, "processed_data", "smaller_data_test.csv")
     df.to_csv(path, index=False)
 
-    return
+    return df
 
 if __name__ == '__main__':
     #train_evaluate_model_knn()
