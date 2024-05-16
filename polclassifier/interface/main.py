@@ -147,7 +147,7 @@ def pred_sklearn(speech: str = None) -> np.ndarray:
         print("❌ Model does not support probability estimates.")
         y_prob = None
 
-    return y_pred, np.max(y_prob[0])
+    return y_pred, y_prob
 
 
 
