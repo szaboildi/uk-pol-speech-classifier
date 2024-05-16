@@ -10,7 +10,7 @@ WORKDIR /prod
 # First, pip install dependencies
 COPY requirements.txt requirements.txt
 COPY processed_data/smaller_data_sample_text.csv smaller_data_sample_text.csv
-RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Then only, install taxifare!
 COPY polclassifier polclassifier

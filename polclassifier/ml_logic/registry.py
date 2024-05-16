@@ -233,11 +233,11 @@ def load_vectorizer(min_df=5, max_df=0.85, max_features=10000):
 def save_shapley_plot(shap_values):
 
     # If the output folder is missing, make it first
-    if not os.path.isdir(os.path.join(LOCAL_REGISTRY_PATH, "text_plot")):
-        os.mkdir(os.path.join(LOCAL_REGISTRY_PATH, "text_plot"))
+    if not os.path.isdir(os.path.join("training_outputs", "text_plot")):
+        os.mkdir(os.path.join("training_outputs", "text_plot"))
 
     # Create file path for one plot
-    plot_path = os.path.join(LOCAL_REGISTRY_PATH, "text_plot", "latest_plot.html")
+    plot_path = os.path.join("training_outputs", "text_plot", "latest_plot.html")
 
     # If a plot already exists, remove it as we only ever need one at a time
     if os.path.exists(plot_path):
@@ -248,4 +248,4 @@ def save_shapley_plot(shap_values):
     file.write(shap.plots.text(shap_values, display=False))
     file.close()
 
-    print("✅ Chapley text plot created and saved to registry")
+    print("✅ Shapley text plot created and saved to registry")

@@ -1,3 +1,4 @@
+import os
 import pandas as pd
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -28,8 +29,7 @@ def predict(speech: str) -> dict:
     return dict(party=y_pred[0], probability=y_prob)
 
 # Read in smaller dataset
-data_path = os.path.join(LOCAL_PATH, "processed_data", "smaller_data_sample_text.csv")
-data = pd.read_csv(data_path)
+data = pd.read_csv("smaller_data_sample_text.csv")
 
 
 # Define endpoint for speech selection
@@ -48,12 +48,14 @@ def get_speech(party: str):
     return dict(speech = selected_speech)
 
 
+
 @app.get("/visualisation")
 def visualise_predict(speech: str):
 
     visualise_pred(speech)
-    html_file = os.path.join(LOCAL_REGISTRY_PATH, "text_plot", "latest_plot.html")
+    html_file = os.path.join("training_outputs", "text_plot", "latest_plot.html")
     return FileResponse(html_file)
+
 
 
 @app.get("/")

@@ -17,3 +17,4 @@ pytest-asyncio
 google-cloud-storage
 
 protobuf==3.20.1
+ipython
