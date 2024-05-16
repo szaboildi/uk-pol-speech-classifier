@@ -141,6 +141,7 @@ def pred_sklearn(speech: str = None) -> np.ndarray:
     if hasattr(model, 'predict_proba'):
         y_prob = model.predict_proba(X_vectorized)
         print(f"✅ Probability estimates: {y_prob}")
+        y_prob = np.max(y_prob[0])
 
     else:
         print("❌ Model does not support probability estimates.")
