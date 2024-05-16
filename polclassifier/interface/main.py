@@ -294,7 +294,7 @@ def load_speeches(min_word_count=400, sample_size=1000, parties_to_exclude=[], s
 
     df['sample_text'] = df['text'].apply(cut_middle_200)
 
-    path = os.path.join(LOCAL_PATH, "processed_data", "smaller_data_test.csv")
+    path = os.path.join(LOCAL_PATH, "processed_data", "smaller_data_sample_text.csv")
     df.to_csv(path, index=False)
 
     return df
