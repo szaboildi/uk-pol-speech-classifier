@@ -1,5 +1,5 @@
 
-This repository is for training classifier for UK parliamentary speeches, which guesses what party's member gave the given speech in the UK House of Commons. You can find an API based on this repo [here](https://svm6-pvutvs4yla-ew.a.run.app) and a frontend [here](https://pol-speech-classifier.streamlit.app/) based on this [Github repo](https://github.com/szaboildi/uk-pol-speech-classifier-frontend).
+This repository is for training classifier for UK parliamentary speeches, which guesses what party's member gave the given speech in the UK House of Commons. You can find an API based on this repo [here](https://svm9-pvutvs4yla-ew.a.run.app) and a frontend [here](https://polclassifier.streamlit.app/) based on this [Github repo](https://github.com/szaboildi/uk-pol-speech-classifier-frontend).
 
 # Install
 The codebase for the training and preprocessing can be found in the `polclassifier/` folder along with some registry functions (for saving and loading models). Currently only SVM and KNN models are supported by this package, as these were found to be the best performing ones. After cloning the repo, it can be installed locally with ```pip install -e .``` The repo also contains scripts for building and deploying a Docker image.
