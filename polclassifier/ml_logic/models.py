@@ -1,5 +1,7 @@
 import pandas as pd
-import numpy as np
+
+from sklearnex import patch_sklearn
+patch_sklearn()
 
 from sklearn.linear_model import LogisticRegression, SGDClassifier
 from sklearn.neighbors import KNeighborsClassifier

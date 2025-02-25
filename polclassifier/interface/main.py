@@ -2,7 +2,10 @@ import os
 from colorama import Fore, Style
 import pandas as pd
 
+from sklearnex import patch_sklearn
+patch_sklearn()
 from sklearn.model_selection import train_test_split
+
 from polclassifier.ml_logic.preprocessing import *
 from polclassifier.ml_logic.models import *
 from polclassifier.ml_logic.registry import *

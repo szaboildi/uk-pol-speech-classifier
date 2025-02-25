@@ -7,6 +7,9 @@ from nltk import word_tokenize
 from nltk.stem import WordNetLemmatizer
 from sklearn.feature_extraction.text import TfidfVectorizer
 
+
+from sklearnex import patch_sklearn
+patch_sklearn()
 from sklearn.preprocessing import OneHotEncoder
 
 from tensorflow.keras.preprocessing.text import Tokenizer
