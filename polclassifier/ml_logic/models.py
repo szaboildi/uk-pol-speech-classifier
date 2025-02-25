@@ -52,6 +52,7 @@ def randomized_search_model_svm(X, y):
 def train_model_svm(X, y, probability=True, best_params=None):
     if best_params is None:
         # If best_params is not provided, train the model with default parameters
+        print("Training with default parameters")
         model = SVC(kernel=KERNEL_DEFAULT, gamma=GAMMA_DEFAULT, C=C_DEFAULT, probability=probability)
     else:
         # If best_params is provided, extract kernel and penalty_c from it

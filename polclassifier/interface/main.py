@@ -16,7 +16,7 @@ shap.initjs();
 
 def preprocess(reprocess_by_default=False):
 
-    print(Fore.MAGENTA + "\n ⭐️ Use case: preprocess" + Style.RESET_ALL)
+    print(Fore.MAGENTA + "\n⭐️ Use case: preprocess" + Style.RESET_ALL)
 
     X_path = os.path.join(
         LOCAL_PATH, "processed_data",
@@ -69,7 +69,7 @@ def train_evaluate_model_svm(split_ratio: float = 0.2, perform_search: bool = Fa
     if len(y.shape) > 1:
         y = y["party"]
 
-    print(f"y shape: {y.shape}")
+    # print(f"y shape: {y.shape}")
 
     # Split the data into training and testing sets
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=split_ratio, random_state=42, stratify=y)
@@ -77,6 +77,7 @@ def train_evaluate_model_svm(split_ratio: float = 0.2, perform_search: bool = Fa
     print("Data split in to test and train")
 
     if perform_search:
+        print("Searching for the best parameters ...")
         # Search for best parameters
         best_params = randomized_search_model_svm(X_train, y_train)
     else:
@@ -84,6 +85,7 @@ def train_evaluate_model_svm(split_ratio: float = 0.2, perform_search: bool = Fa
         best_params = None
 
     # Train model using `models.py`
+    print("Training SVM model")
     model = train_model_svm(X_train, y_train, probability=True, best_params=best_params)
 
     print("✅ Model trained \n")

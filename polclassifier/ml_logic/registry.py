@@ -38,7 +38,6 @@ def save_model_sklearn(model = None) -> None:
     return None
 
 
-
 def load_model_sklearn():
 
     if MODEL_TARGET == "local":
