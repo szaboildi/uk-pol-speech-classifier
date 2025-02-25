@@ -1,18 +1,19 @@
 import os
 import pandas as pd
-from colorama import Fore, Style
+# from colorama import Fore, Style
 
 import string
 from nltk import word_tokenize
 from nltk.stem import WordNetLemmatizer
 from sklearn.feature_extraction.text import TfidfVectorizer
 
+import numpy as np
 
 from sklearnex import patch_sklearn
 patch_sklearn()
 from sklearn.preprocessing import OneHotEncoder
 
-from tensorflow.keras.preprocessing.text import Tokenizer
+# from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 # from nltk.corpus import stopwords
 

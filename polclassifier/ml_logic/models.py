@@ -3,17 +3,17 @@ import pandas as pd
 from sklearnex import patch_sklearn
 patch_sklearn()
 
-from sklearn.linear_model import LogisticRegression, SGDClassifier
+# from sklearn.linear_model import LogisticRegression, SGDClassifier
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import accuracy_score, classification_report
 from sklearn.model_selection import train_test_split, cross_val_score, RandomizedSearchCV
 from sklearn.svm import SVC
 
-from tensorflow.keras import Model, Sequential, layers, regularizers, optimizers
-from tensorflow.keras.callbacks import EarlyStopping
+# from tensorflow.keras import Model, Sequential, layers, regularizers, optimizers
+# from tensorflow.keras.callbacks import EarlyStopping
 
-from colorama import Fore, Style
-import joblib
+# from colorama import Fore, Style
+# import joblib
 
 from polclassifier.params import *
 
