@@ -33,10 +33,6 @@ def preprocess(reprocess_by_default=False):
         y = pd.read_csv(y_path)
     # if not, do proper preprocessing
     else:
-        # If the folder is also missing, make it first
-        if not os.path.isdir(os.path.join(LOCAL_PATH, "processed_data")):
-            os.mkdir(os.path.join(LOCAL_PATH, "processed_data"))
-
         raw_data_path = os.path.join(
             LOCAL_PATH, "raw_data", "Corp_HouseOfCommons_V2.feather")
         data = pd.read_feather(raw_data_path)
