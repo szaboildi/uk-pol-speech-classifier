@@ -37,14 +37,14 @@ if not os.path.isdir(os.path.join(LOCAL_PATH, "processed_data")):
     os.makedirs(os.path.join(LOCAL_PATH, "processed_data"))
     print("Created folder for processed data")
 
-if not os.path.isdir(os.path.join(LOCAL_PATH, "training_outputs", "vectorizers")):
-    os.makedirs(os.path.join(LOCAL_PATH, "training_outputs", "vectorizers"))
+if not os.path.isdir(os.path.join(LOCAL_REGISTRY_PATH, "vectorizers")):
+    os.makedirs(os.path.join(LOCAL_REGISTRY_PATH, "vectorizers"))
     print("Created folder for vectorizers")
 
-if not os.path.isdir(os.path.join(LOCAL_PATH, "training_outputs", "models")):
-    os.makedirs(os.path.join(LOCAL_PATH, "training_outputs", "models"))
+if not os.path.isdir(os.path.join(LOCAL_REGISTRY_PATH, "models")):
+    os.makedirs(os.path.join(LOCAL_REGISTRY_PATH, "models"))
     print("Created folder for models")
 
-if not os.path.isdir(os.path.join(LOCAL_PATH, "training_outputs", "text_plot")):
-    os.makedirs(os.path.join(LOCAL_PATH, "training_outputs", "text_plot"))
+if not os.path.isdir(os.path.join(LOCAL_REGISTRY_PATH, "text_plot")):
+    os.makedirs(os.path.join(LOCAL_REGISTRY_PATH, "text_plot"))
     print("Created folder for Shapley plots")
