@@ -1,6 +1,7 @@
 import os
 from colorama import Fore, Style
 import pandas as pd
+pd.options.mode.chained_assignment = None
 
 from sklearnex import patch_sklearn
 patch_sklearn()
@@ -265,8 +266,8 @@ def load_speeches(min_word_count=400, sample_size=1000, parties_to_exclude=[], s
     return df
 
 if __name__ == '__main__':
-    #train_evaluate_model_knn()
-    # train_evaluate_model_svm()
-    #load_speeches()
+    train_evaluate_model_knn()
+    train_evaluate_model_svm()
+    # load_speeches()
     # create_shapley_explainer()
     load_speeches()
