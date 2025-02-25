@@ -1,17 +1,19 @@
 import pandas as pd
-import numpy as np
 
-from sklearn.linear_model import LogisticRegression, SGDClassifier
+from sklearnex import patch_sklearn
+patch_sklearn()
+
+# from sklearn.linear_model import LogisticRegression, SGDClassifier
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import accuracy_score, classification_report
 from sklearn.model_selection import train_test_split, cross_val_score, RandomizedSearchCV
 from sklearn.svm import SVC
 
-from tensorflow.keras import Model, Sequential, layers, regularizers, optimizers
-from tensorflow.keras.callbacks import EarlyStopping
+# from tensorflow.keras import Model, Sequential, layers, regularizers, optimizers
+# from tensorflow.keras.callbacks import EarlyStopping
 
-from colorama import Fore, Style
-import joblib
+# from colorama import Fore, Style
+# import joblib
 
 from polclassifier.params import *
 
@@ -50,6 +52,7 @@ def randomized_search_model_svm(X, y):
 def train_model_svm(X, y, probability=True, best_params=None):
     if best_params is None:
         # If best_params is not provided, train the model with default parameters
+        print("Training with default parameters")
         model = SVC(kernel=KERNEL_DEFAULT, gamma=GAMMA_DEFAULT, C=C_DEFAULT, probability=probability)
     else:
         # If best_params is provided, extract kernel and penalty_c from it

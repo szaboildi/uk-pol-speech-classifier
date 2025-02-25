@@ -2,7 +2,6 @@ import os
 import time
 from colorama import Fore, Style
 
-
 import joblib
 import glob
 
@@ -37,7 +36,6 @@ def save_model_sklearn(model = None) -> None:
         return None
 
     return None
-
 
 
 def load_model_sklearn():
@@ -94,11 +92,6 @@ def load_model_sklearn():
 
 
 def save_vectorizer(vectorizer=None, min_df=5, max_df=0.85, max_features=10000) -> None:
-
-    # If the output folder is missing, make it first
-    if not os.path.isdir(os.path.join(LOCAL_REGISTRY_PATH, "vectorizers")):
-        os.mkdir(os.path.join(LOCAL_REGISTRY_PATH, "vectorizers"))
-
     # Save vectorizer locally
     vect_path = os.path.join(LOCAL_REGISTRY_PATH, "vectorizers", f"{min_df}-{max_df}-{max_features}.pkl")
     joblib.dump(vectorizer, vect_path)
@@ -160,11 +153,6 @@ def load_vectorizer(min_df=5, max_df=0.85, max_features=10000):
 
 
 def save_shapley_plot(shap_values):
-
-    # If the output folder is missing, make it first
-    if not os.path.isdir(os.path.join("training_outputs", "text_plot")):
-        os.mkdir(os.path.join("training_outputs", "text_plot"))
-
     # Create file path for one plot
     plot_path = os.path.join("training_outputs", "text_plot", "latest_plot.html")
 

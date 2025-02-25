@@ -1,8 +1,12 @@
 import os
 from colorama import Fore, Style
 import pandas as pd
+pd.options.mode.chained_assignment = None
 
+from sklearnex import patch_sklearn
+patch_sklearn()
 from sklearn.model_selection import train_test_split
+
 from polclassifier.ml_logic.preprocessing import *
 from polclassifier.ml_logic.models import *
 from polclassifier.ml_logic.registry import *
@@ -13,7 +17,7 @@ shap.initjs();
 
 def preprocess(reprocess_by_default=False):
 
-    print(Fore.MAGENTA + "\n ⭐️ Use case: preprocess" + Style.RESET_ALL)
+    print(Fore.MAGENTA + "\n⭐️ Use case: preprocess" + Style.RESET_ALL)
 
     X_path = os.path.join(
         LOCAL_PATH, "processed_data",
@@ -30,10 +34,6 @@ def preprocess(reprocess_by_default=False):
         y = pd.read_csv(y_path)
     # if not, do proper preprocessing
     else:
-        # If the folder is also missing, make it first
-        if not os.path.isdir(os.path.join(LOCAL_PATH, "processed_data")):
-            os.mkdir(os.path.join(LOCAL_PATH, "processed_data"))
-
         raw_data_path = os.path.join(
             LOCAL_PATH, "raw_data", "Corp_HouseOfCommons_V2.feather")
         data = pd.read_feather(raw_data_path)
@@ -70,7 +70,7 @@ def train_evaluate_model_svm(split_ratio: float = 0.2, perform_search: bool = Fa
     if len(y.shape) > 1:
         y = y["party"]
 
-    print(f"y shape: {y.shape}")
+    # print(f"y shape: {y.shape}")
 
     # Split the data into training and testing sets
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=split_ratio, random_state=42, stratify=y)
@@ -78,6 +78,7 @@ def train_evaluate_model_svm(split_ratio: float = 0.2, perform_search: bool = Fa
     print("Data split in to test and train")
 
     if perform_search:
+        print("Searching for the best parameters ...")
         # Search for best parameters
         best_params = randomized_search_model_svm(X_train, y_train)
     else:
@@ -85,6 +86,7 @@ def train_evaluate_model_svm(split_ratio: float = 0.2, perform_search: bool = Fa
         best_params = None
 
     # Train model using `models.py`
+    print("Training SVM model")
     model = train_model_svm(X_train, y_train, probability=True, best_params=best_params)
 
     print("✅ Model trained \n")
@@ -264,8 +266,8 @@ def load_speeches(min_word_count=400, sample_size=1000, parties_to_exclude=[], s
     return df
 
 if __name__ == '__main__':
-    #train_evaluate_model_knn()
-    # train_evaluate_model_svm()
-    #load_speeches()
+    train_evaluate_model_knn()
+    train_evaluate_model_svm()
+    # load_speeches()
     # create_shapley_explainer()
     load_speeches()

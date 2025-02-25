@@ -25,10 +25,9 @@ raw_data/
 # Data in the package
 # Add files you want to include in the git repo using `git add -f file_name`
 processed_data/
-data/
+training_outputs/
 
 # Saved models
-models/
 *.joblib
 *.h5
 
@@ -46,3 +45,6 @@ secrets.toml
 
 # User defined extras
 # Complete to your desire
+
+# Virtual environment
+.venv/
