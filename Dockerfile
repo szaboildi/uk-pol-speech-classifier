@@ -3,7 +3,7 @@
 ### docker build --tag=$GAR_IMAGE:dev .
 ### docker run -it -e PORT=8000 -p 8000:8000 $GAR_IMAGE:dev -> include sh on the end to enter shell to test ls and pip list
 
-FROM tensorflow/tensorflow:2.10.0
+FROM tensorflow/tensorflow:2.9.0
 
 WORKDIR /prod
 
