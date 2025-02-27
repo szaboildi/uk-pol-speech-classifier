@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools", "nltk"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "polclassifier"
+version = "0.0.2"
+description = "UK Political Speech Classifier"
+readme = "README.md"
+license = {file = "LICEN[CS]E.*"}
+authors = [
+  {name = "Ildi Szabo"},
+  {name =  "Hai Linh Trieu"},
+  {name = "Jonah Ramchandani"},
+  {name = "Radu Burtescu"},
+]
+maintainers = [
+  {name = "Ildi Szabo", email = "ildi.szabo@nyu.edu"}
+]
+requires-python = ">=3.10"
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python"
+]
+# install dependencies
+dynamic = ["dependencies", "optional-dependencies"]
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
+optional-dependencies = {dev = { file = ["requirements-dev.txt"] }}
+
+[tool.setuptools]
+packages = ["polclassifier"]
