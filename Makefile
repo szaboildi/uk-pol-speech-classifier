@@ -1,3 +1,5 @@
+setup_folder:
+	python setup_local_folder.py
 gar_creation_gcp:
 	gcloud auth configure-docker ${GCP_REGION}-docker.pkg.dev
 	gcloud artifacts repositories create ${GAR_REPO} --repository-format=docker \
